@@ -304,6 +304,10 @@ section h2 {
     gap: 2rem;
     text-align: center;
 }
+.category-grid a {
+    text-decoration: none;
+    color: inherit;
+}
 
 .category-card {
     background: var(--white-color);    
