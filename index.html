@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BazarBasket - Fresh Groceries Delivered</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="BazarBasket-Logo.png">
+    <!-- Using a modern version of Font Awesome for better icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo-container">
+                <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
+                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                </div>
+            </a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for fresh groceries...">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Deals</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="login.html" class="btn btn-secondary">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container hero-container">
+                <div class="hero-text">
+                    <span class="hero-subtitle">FRESH & ORGANIC</span>
+                    <h1>Your Daily Dose of Freshness, Delivered.</h1>
+                    <p>The best quality fruits, vegetables, and groceries, sourced locally and delivered to your doorstep with a smile.</p>
+                    <a href="#" class="btn btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="hero-image">
+                    <img src="https://placehold.co/500x500/E8F5E9/333?text=Groceries" alt="Fresh Groceries Basket">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="feature-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>Fast Delivery</h3>
+                    <p>Within 60 minutes</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-leaf"></i>
+                    <h3>Always Fresh</h3>
+                    <p>Sourced from local farms</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-award"></i>
+                    <h3>Superior Quality</h3>
+                    <p>Quality guaranteed</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <h2>Shop by Category</h2>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <img src="https://placehold.co/100x100/A3E635/333333?text=Veggies" alt="Fresh Vegetables">
+                        <h3>Vegetables</h3>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://placehold.co/100x100/FBBF24/333333?text=Fruits" alt="Fresh Fruits">
+                        <h3>Fruits</h3>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://placehold.co/100x100/60A5FA/333333?text=Dairy" alt="Dairy & Eggs">
+                        <h3>Dairy & Eggs</h3>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://placehold.co/100x100/F87171/333333?text=Meat" alt="Meat & Fish">
+                        <h3>Meat & Fish</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="product-grid">
+                    <!-- Product Card 1 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
+                        </div>
+                        <div class="product-info">
+                            <h3>Fresh Broccoli</h3>
+                            <p class="price">$2.99 / lb</p>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Organic Apples">
+                        </div>
+                        <div class="product-info">
+                            <h3>Organic Apples</h3>
+                            <p class="price">$3.49 / lb</p>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img src="https://placehold.co/300x300/60A5FA/FFFFFF?text=Milk" alt="Farm Fresh Milk">
+                        </div>
+                        <div class="product-info">
+                            <h3>Farm Fresh Milk</h3>
+                            <p class="price">$4.50 / gallon</p>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Chicken" alt="Chicken Breast">
+                        </div>
+                        <div class="product-info">
+                            <h3>Chicken Breast</h3>
+                            <p class="price">$7.99 / lb</p>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>BazarBasket</h3>
+                    <p>Your one-stop shop for the freshest groceries, delivered with care right to your home.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Follow Us</h4>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BazarBasket. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
