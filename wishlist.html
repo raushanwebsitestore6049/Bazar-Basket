@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - BazarBasket</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="BazarBasket-Logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo-container">
+                <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
+                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <button class="nav-close-btn" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="#">Deals</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="shopping-cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="login.html" class="btn btn-secondary">Login</a>
+            </div>
+            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>My Account</h1>
+                <p>Manage your profile, orders, and addresses.</p>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <div class="container profile-container">
+                <!-- Profile Sidebar -->
+                <aside class="profile-sidebar">
+                    <div class="profile-user">
+                        <img src="https://placehold.co/80x80/E2E8F0/475569?text=R" alt="User Avatar">
+                        <h4>Raushan Kumar</h4>
+                        <p>raushan@example.com</p>
+                    </div>
+                    <nav class="profile-nav">
+                        <ul>
+                            <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                            <li><a href="my-orders.html"><i class="fas fa-box"></i> My Orders</a></li>
+                            <li><a href="my-addresses.html"><i class="fas fa-map-marker-alt"></i> My Addresses</a></li>
+                            <li><a href="wishlist.html" class="active"><i class="fas fa-heart"></i> Wishlist</a></li>
+                            <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Wishlist Content -->
+                <div class="profile-content">
+                    <h3>My Wishlist</h3>
+                    <div class="listing-grid">
+                        <!-- Product Card 1 -->
+                        <div class="product-card">
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-image-container">
+                                    <button class="wishlist-remove-btn" aria-label="Remove from wishlist"><i class="fas fa-times"></i></button>
+                                    <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Shimla Apples">
+                                </div>
+                                <div class="product-info">
+                                    <h3>Shimla Apples</h3>
+                                    <p class="price">₹180 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div class="product-card">
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-image-container">
+                                    <button class="wishlist-remove-btn" aria-label="Remove from wishlist"><i class="fas fa-times"></i></button>
+                                    <img src="https://placehold.co/300x300/60A5FA/FFFFFF?text=Milk" alt="Toned Milk">
+                                </div>
+                                <div class="product-info">
+                                    <h3>Toned Milk</h3>
+                                    <p class="price">₹65 / litre</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

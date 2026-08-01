@@ -28,20 +28,22 @@
                 <i class="fas fa-search"></i>
             </div>
             <nav class="main-nav">
+                <button class="nav-close-btn" aria-label="Close navigation"><i class="fas fa-times"></i></button>
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="#">Categories</a></li>
+                    <li><a href="categories.html">Categories</a></li>
                     <li><a href="#">Deals</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="#" class="cart-icon">
+                <a href="shopping-cart.html" class="cart-icon">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">3</span>
                 </a>
                 <a href="login.html" class="btn btn-secondary">Login</a>
             </div>
+            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 
@@ -73,47 +75,95 @@
                     </div>
                 </aside>
 
+                <div class="listing-main">
+                    <div class="listing-header">
+                        <p>Showing 1-9 of 20 results</p>
+                        <div class="sort-by">
+                            <label for="sort">Sort by:</label>
+                            <select name="sort" id="sort">
+                                <option value="popularity">Popularity</option>
+                                <option value="price-low-high">Price: Low to High</option>
+                                <option value="price-high-low">Price: High to Low</option>
+                            </select>
+                        </div>
+                    </div>
                 <!-- Product Grid -->
                 <div class="listing-grid">
                     <!-- Product Card 1 -->
                     <div class="product-card">
-                        <div class="product-image-container">
-                            <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
-                        </div>
-                        <div class="product-info">
-                            <h3>Fresh Broccoli</h3>
-                            <p class="price">$2.99 / lb</p>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <span class="product-badge">New</span>
+                                <button class="quick-view-btn" aria-label="Quick view"><i class="fas fa-eye"></i></button>
+                                <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
+                            </div>
+                            <div class="product-info">
+                                <h3>Fresh Broccoli</h3>
+                                <p class="price">₹120 / kg</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
                     </div>
                     <!-- Product Card 2 -->
                     <div class="product-card">
-                        <div class="product-image-container">
-                            <img src="https://placehold.co/300x300/84CC16/FFFFFF?text=Spinach" alt="Organic Spinach">
-                        </div>
-                        <div class="product-info">
-                            <h3>Organic Spinach</h3>
-                            <p class="price">$3.19 / bunch</p>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <button class="quick-view-btn" aria-label="Quick view"><i class="fas fa-eye"></i></button>
+                                <img src="https://placehold.co/300x300/84CC16/FFFFFF?text=Spinach" alt="Organic Spinach">
+                            </div>
+                            <div class="product-info">
+                                <h3>Organic Spinach</h3>
+                                <p class="price">₹45 / bunch</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
                     </div>
                     <!-- Add 6 more product cards here to fill the grid -->
                     <div class="product-card">
-                        <div class="product-image-container">
-                            <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
-                        </div>
-                        <div class="product-info">
-                            <h3>Vine Tomatoes</h3>
-                            <p class="price">$2.49 / lb</p>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <button class="quick-view-btn" aria-label="Quick view"><i class="fas fa-eye"></i></button>
+                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
+                            </div>
+                            <div class="product-info">
+                                <h3>Vine Tomatoes</h3>
+                                <p class="price">₹99 / kg</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
                     </div>
                     <!-- ... etc ... -->
+                </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quick-view-modal">
+        <div class="modal quick-view-modal">
+            <button class="modal-close-btn" aria-label="Close quick view"><i class="fas fa-times"></i></button>
+            <div class="product-details-container">
+                <div class="product-image-gallery">
+                    <img src="https://placehold.co/500x500/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli" class="main-product-image">
+                </div>
+                <div class="product-details-info">
+                    <h2 class="product-title">Fresh Broccoli</h2>
+                    <p class="product-price">₹120 / kg</p>
+                    <p class="product-description">
+                        Fresh, crisp broccoli sourced directly from local farms. Rich in vitamins and perfect for a healthy meal.
+                    </p>
+                    <div class="quantity-selector">
+                        <label for="quantity-modal">Quantity:</label>
+                        <input type="number" id="quantity-modal" name="quantity" value="1" min="1">
+                    </div>
+                    <button class="btn btn-primary add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>

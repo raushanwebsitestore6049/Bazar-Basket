@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Broccoli - BazarBasket</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="BazarBasket-Logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo-container">
+                <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
+                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                </div>
+            </a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for fresh groceries...">
+                <i class="fas fa-search"></i>
+            </div>
+            <nav class="main-nav">
+                <button class="nav-close-btn" aria-label="Close navigation"><i class="fas fa-times"></i></button>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="#">Deals</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="shopping-cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="login.html" class="btn btn-secondary">Login</a>
+            </div>
+            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Product Details</h1>
+                <p>Home / Vegetables / Fresh Broccoli</p>
+            </div>
+        </section>
+
+        <section class="product-details-section">
+            <div class="container product-details-container">
+                <div class="product-image-gallery">
+                    <img src="https://placehold.co/500x500/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli" class="main-product-image">
+                </div>
+                <div class="product-details-info">
+                    <h2 class="product-title">Fresh Broccoli</h2>
+                    <p class="product-price">₹120 / kg</p>
+                    <p class="product-description">
+                        Fresh, crisp broccoli sourced directly from local farms. Rich in vitamins and perfect for a healthy meal.
+                    </p>
+                    <div class="quantity-selector">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    </div>
+                    <button class="btn btn-primary add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Products Section -->
+        <section class="related-products">
+            <div class="container">
+                <h2>Related Products</h2>
+                <div class="product-grid">
+                    <!-- Product Card 1 -->
+                    <div class="product-card">
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <img src="https://placehold.co/300x300/84CC16/FFFFFF?text=Spinach" alt="Organic Spinach">
+                            </div>
+                            <div class="product-info">
+                                <h3>Organic Spinach</h3>
+                                <p class="price">₹45 / bunch</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="product-card">
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
+                            </div>
+                            <div class="product-info">
+                                <h3>Vine Tomatoes</h3>
+                                <p class="price">₹99 / kg</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="product-card">
+                        <a href="product-details.html" class="product-link">
+                            <div class="product-image-container">
+                                <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Shimla Apples">
+                            </div>
+                            <div class="product-info">
+                                <h3>Shimla Apples</h3>
+                                <p class="price">₹180 / kg</p>
+                            </div>
+                        </a>
+                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
