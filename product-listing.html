@@ -16,34 +16,38 @@
     <!-- Header Section -->
     <header class="main-header">
         <div class="container">
-            <a href="index.html" class="logo-container">
-                <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
-                <div class="logo-text">
-                    <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
-                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
-                </div>
-            </a>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for fresh groceries...">
-                <i class="fas fa-search"></i>
-            </div>
-            <nav class="main-nav">
-                <button class="nav-close-btn" aria-label="Close navigation"><i class="fas fa-times"></i></button>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="categories.html">Categories</a></li>
-                    <li><a href="#">Deals</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="header-actions">
-                <a href="shopping-cart.html" class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">3</span>
+            <div class="header-main-content">
+                <a href="index.html" class="logo-container">
+                    <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
+                        <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                    </div>
                 </a>
-                <a href="login.html" class="btn btn-secondary">Login</a>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for fresh groceries...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="location-selector" id="header-location-selector">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="selected-location-text">Mumbai, 400001</span>
+                </div>
+                <div class="header-actions">
+                    <a href="shopping-cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <button class="profile-btn" aria-label="User account">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="profile-dropdown-content">
+                            <a href="login.html" class="btn btn-primary">Login</a>
+                            <a href="register.html" class="btn btn-secondary">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 
@@ -163,6 +167,34 @@
         </div>
     </div>
 
+    <!-- Location Selection Modal -->
+    <div class="modal-overlay" id="location-selection-modal">
+        <div class="modal location-modal">
+            <button class="modal-close-btn" aria-label="Close location selector"><i class="fas fa-times"></i></button>
+            <h3>Select Your Delivery Location</h3>
+
+            <div class="location-modal-search">
+                <input type="text" id="location-search-input" placeholder="Search for an area, street, or landmark...">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="location-modal-results">
+                <!-- Search results will be populated here by JavaScript -->
+                <ul>
+                    <!-- Example: -->
+                    <!-- <li>Mumbai, Maharashtra, India</li> -->
+                </ul>
+            </div>
+
+            <button class="btn btn-primary detect-location-btn" id="detect-current-location-btn">
+                <i class="fas fa-crosshairs"></i> Detect Current Location
+            </button>
+
+            <div class="location-map-embed" id="location-map-embed">
+                <!-- Google Map will be embedded here -->
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 
 </body>

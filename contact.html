@@ -23,15 +23,15 @@
                     <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
                 </div>
             </a>
-            <nav class="main-nav">
-                <button class="nav-close-btn" aria-label="Close navigation"><i class="fas fa-times"></i></button>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="categories.html">Categories</a></li>
-                    <li><a href="#">Deals</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for fresh groceries...">
+                <i class="fas fa-search"></i>
+            </div>
+            <!-- Location Selector -->
+            <div class="location-selector" id="header-location-selector">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="selected-location-text">Mumbai, 400001</span>
+            </div>
             <div class="header-actions">
                 <a href="shopping-cart.html" class="cart-icon">
                     <i class="fas fa-shopping-cart"></i>
@@ -39,7 +39,6 @@
                 </a>
                 <a href="login.html" class="btn btn-secondary">Login</a>
             </div>
-            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 

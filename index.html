@@ -17,42 +17,52 @@
     <!-- Header Section -->
     <header class="main-header">
         <div class="container">
-            <a href="index.html" class="logo-container">
-                <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
-                <div class="logo-text">
-                    <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
-                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
-                </div>
-            </a>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for fresh groceries...">
-                <i class="fas fa-search"></i>
-            </div>
-            <div class="location-selector">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Mumbai, 400001</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="header-actions">
-                <a href="shopping-cart.html" class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">3</span>
+            <div class="header-main-content">
+                <a href="index.html" class="logo-container">
+                    <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
+                        <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                    </div>
                 </a>
-                <a href="login.html" class="btn btn-secondary">Login</a>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for fresh groceries...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="location-selector" id="header-location-selector">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="selected-location-text">Mumbai, 400001</span>
+                </div>
+                <div class="header-actions">
+                    <a href="shopping-cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <button class="profile-btn" aria-label="User account">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="profile-dropdown-content">
+                            <a href="login.html" class="btn btn-primary">Login</a>
+                            <a href="register.html" class="btn btn-secondary">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="mobile-nav-toggle" aria-label="Open navigation"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 
     <!-- Secondary Navigation -->
     <nav class="secondary-nav">
         <div class="container">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="categories.html">Categories</a></li>
-                <li><a href="#">Deals</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+            <div class="secondary-nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="#">Deals</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -62,24 +72,262 @@
         <section class="hero-slider-section">
             <div class="hero-slider">
                 <!-- Slide 1 -->
-                <div class="hero-slide active" style="background-image: url('https://placehold.co/1920x500/E8F5E9/333?text=Fresh+Vegetables');">
-                    <div class="container">
-                        <div class="hero-text">
-                            <span class="hero-subtitle">FRESH & ORGANIC</span>
-                            <h1>Your Daily Dose of Freshness, Delivered.</h1>
-                            <p>The best quality fruits, vegetables, and groceries, sourced locally and delivered to your doorstep with a smile.</p>
-                            <a href="product-listing.html" class="btn btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="hero-slide active">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKDYDcvhYeg2fsQltuNLEWQ8FG7r7-bEylSDHKro-f_Q&s" alt="A variety of fresh vegetables on a wooden surface">
+                </div>
+                <!-- Slide 2 -->
+                <div class="hero-slide">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGUPTXeneUKg7wBwhC5xkuKxHz9IUjZ8RYHl3r72Vdjg&s=10" alt="Fresh colorful fruits like strawberries, blueberries, and oranges">
+                </div>
+                <!-- Slide 3 -->
+                <div class="hero-slide">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLmZe3g4N7QTUyjXgaKElmCGvZmCoZGbiDaemziVD8yA&s=10" alt="Dairy products including milk, cheese, and yogurt">
+                </div>
+                <!-- Slide 4 -->
+                <div class="hero-slide">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHUGluVDTR8N22rdVPLjy0I1TIp-xQJuIR2aYvvJXJ9A&s=10" alt="A shopping basket filled with groceries in a supermarket aisle">
+                </div>
+                <!-- Slide 5 -->
+                <div class="hero-slide">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCMwEszXkAGkFPApn9Lo6tJ-5dopfJJg9lQBMB0Itnhg&s" alt="A close-up of fresh bread loaves on a shelf">
+                </div>
+            </div>
+            <!-- Slider Navigation -->
+            <button class="slider-nav prev" id="slider-prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-nav next" id="slider-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+            <!-- Slider Pagination -->
+            <div class="slider-pagination" id="slider-pagination">
+                <!-- Pagination dots will be inserted here by JS -->
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <h2>Shop by Category</h2>
+                <div class="scroll-wrapper">
+                    <div class="category-grid">
+                        <a href="product-listing.html" class="category-card">
+                            <img src="https://placehold.co/100x100/A3E635/333333?text=Veggies" alt="Fresh Vegetables">
+                            <h3>Vegetables</h3>
+                        </a>
+                        <a href="product-listing.html" class="category-card">
+                            <img src="https://placehold.co/100x100/FBBF24/333333?text=Fruits" alt="Fresh Fruits">
+                            <h3>Fruits</h3>
+                        </a>
+                        <a href="product-listing.html" class="category-card">
+                            <img src="https://placehold.co/100x100/60A5FA/333333?text=Dairy" alt="Dairy & Eggs">
+                            <h3>Dairy & Eggs</h3>
+                        </a>
+                        <a href="product-listing.html" class="category-card">
+                            <img src="https://placehold.co/100x100/F87171/333333?text=Meat" alt="Meat & Fish">
+                            <h3>Meat & Fish</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="scroll-wrapper">
+                    <div class="product-grid">
+                        <!-- Product Card 1 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Fresh Broccoli</h3>
+                                    <p class="price">₹120 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Shimla Apples">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Shimla Apples</h3>
+                                    <p class="price">₹180 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <!-- Product Card 3 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/60A5FA/FFFFFF?text=Milk" alt="Toned Milk">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Toned Milk</h3>
+                                    <p class="price">₹65 / litre</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <!-- Product Card 4 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Chicken" alt="Chicken Curry Cut">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Chicken Curry Cut</h3>
+                                    <p class="price">₹250 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
                         </div>
                     </div>
                 </div>
-                <!-- Slide 2 -->
-                <div class="hero-slide" style="background-image: url('https://placehold.co/1920x500/FEF3C7/333?text=Daily+Essentials');">
-                    <div class="container">
-                        <div class="hero-text">
-                            <span class="hero-subtitle">UP TO 30% OFF</span>
-                            <h1>All Your Daily Essentials in One Place</h1>
-                            <p>From dairy and eggs to pantry staples, get everything you need with amazing discounts.</p>
-                            <a href="product-listing.html" class="btn btn-primary">Explore Deals <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </section>
+
+        <!-- Today's Offers Section -->
+        <section class="offers-section">
+            <div class="container">
+                <h2>Today's Offers</h2>
+                <div class="scroll-wrapper">
+                    <div class="product-grid">
+                        <!-- Offer Product 1 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <span class="product-badge sale-badge">20% OFF</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/FDBA74/FFFFFF?text=Oranges" alt="Nagpur Oranges">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Nagpur Oranges</h3>
+                                    <p class="price"><span class="original-price">₹100</span> ₹80 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                        <!-- Offer Product 2 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <span class="product-badge sale-badge">15% OFF</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/D1FAE5/FFFFFF?text=Cucumber" alt="Cucumber">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Fresh Cucumber</h3>
+                                    <p class="price"><span class="original-price">₹50</span> ₹42.50 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Brands Section -->
+        <section class="brands-section">
+            <div class="container">
+                <h2>Top Brands</h2>
+                <div class="scroll-wrapper">
+                    <div class="brands-grid">
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+A" alt="Brand A">
+                        </a>
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+B" alt="Brand B">
+                        </a>
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+C" alt="Brand C">
+                        </a>
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+D" alt="Brand D">
+                        </a>
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+E" alt="Brand E">
+                        </a>
+                        <a href="product-listing.html" class="brand-logo">
+                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+F" alt="Brand F">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Viewed Section -->
+        <section class="featured-products">
+            <div class="container">
+                <h2>Recently Viewed</h2>
+                <div class="scroll-wrapper">
+                    <div class="product-grid">
+                        <!-- Recently Viewed Product 1 -->
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
+                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
+                            </div>
+                            <a href="product-details.html" class="product-link">
+                                <div class="product-info">
+                                    <h3>Vine Tomatoes</h3>
+                                    <p class="price">₹99 / kg</p>
+                                </div>
+                            </a>
+                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <h2>What Our Customers Say</h2>
+                <div class="scroll-wrapper">
+                    <div class="testimonial-grid">
+                        <!-- Testimonial 1 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <blockquote>"The produce is always so fresh! Delivery is super fast, and it has made my weekly grocery shopping a breeze."</blockquote>
+                            <div class="testimonial-author">
+                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=P" alt="Priya S.">
+                                <p>Priya S.<span>, Mumbai</span></p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 2 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <blockquote>"I love the wide range of organic products available. BazarBasket is my go-to for healthy and fresh groceries."</blockquote>
+                            <div class="testimonial-author">
+                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=R" alt="Rohan K.">
+                                <p>Rohan K.<span>, Delhi</span></p>
+                            </div>
+                        </div>
+                        <!-- Testimonial 3 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <blockquote>"Excellent customer service and always on-time delivery. Highly recommended for anyone with a busy schedule!"</blockquote>
+                            <div class="testimonial-author">
+                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=A" alt="Anjali M.">
+                                <p>Anjali M.<span>, Bangalore</span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,227 +351,6 @@
                     <i class="fa-solid fa-award"></i>
                     <h3>Superior Quality</h3>
                     <p>Quality guaranteed</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories Section -->
-        <section class="categories-section">
-            <div class="container">
-                <h2>Shop by Category</h2>
-                <div class="category-grid">
-                    <a href="product-listing.html" class="category-card">
-                        <img src="https://placehold.co/100x100/A3E635/333333?text=Veggies" alt="Fresh Vegetables">
-                        <h3>Vegetables</h3>
-                    </a>
-                    <a href="product-listing.html" class="category-card">
-                        <img src="https://placehold.co/100x100/FBBF24/333333?text=Fruits" alt="Fresh Fruits">
-                        <h3>Fruits</h3>
-                    </a>
-                    <a href="product-listing.html" class="category-card">
-                        <img src="https://placehold.co/100x100/60A5FA/333333?text=Dairy" alt="Dairy & Eggs">
-                        <h3>Dairy & Eggs</h3>
-                    </a>
-                    <a href="product-listing.html" class="category-card">
-                        <img src="https://placehold.co/100x100/F87171/333333?text=Meat" alt="Meat & Fish">
-                        <h3>Meat & Fish</h3>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Products Section -->
-        <section class="featured-products">
-            <div class="container">
-                <h2>Featured Products</h2>
-                <div class="product-grid">
-                    <!-- Product Card 1 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Fresh Broccoli</h3>
-                                <p class="price">₹120 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                    <!-- Product Card 2 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Shimla Apples">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Shimla Apples</h3>
-                                <p class="price">₹180 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                    <!-- Product Card 3 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/60A5FA/FFFFFF?text=Milk" alt="Toned Milk">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Toned Milk</h3>
-                                <p class="price">₹65 / litre</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                    <!-- Product Card 4 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Chicken" alt="Chicken Curry Cut">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Chicken Curry Cut</h3>
-                                <p class="price">₹250 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Today's Offers Section -->
-        <section class="offers-section">
-            <div class="container">
-                <h2>Today's Offers</h2>
-                <div class="product-grid">
-                    <!-- Offer Product 1 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <span class="product-badge sale-badge">20% OFF</span>
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/FDBA74/FFFFFF?text=Oranges" alt="Nagpur Oranges">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Nagpur Oranges</h3>
-                                <p class="price"><span class="original-price">₹100</span> ₹80 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                    <!-- Offer Product 2 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <span class="product-badge sale-badge">15% OFF</span>
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/D1FAE5/FFFFFF?text=Cucumber" alt="Cucumber">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Fresh Cucumber</h3>
-                                <p class="price"><span class="original-price">₹50</span> ₹42.50 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Top Brands Section -->
-        <section class="brands-section">
-            <div class="container">
-                <h2>Top Brands</h2>
-                <div class="brands-grid">
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+A" alt="Brand A">
-                    </a>
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+B" alt="Brand B">
-                    </a>
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+C" alt="Brand C">
-                    </a>
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+D" alt="Brand D">
-                    </a>
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+E" alt="Brand E">
-                    </a>
-                    <a href="product-listing.html" class="brand-logo">
-                        <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+F" alt="Brand F">
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recently Viewed Section -->
-        <section class="featured-products">
-            <div class="container">
-                <h2>Recently Viewed</h2>
-                <div class="product-grid">
-                    <!-- Recently Viewed Product 1 -->
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
-                        </div>
-                        <a href="product-details.html" class="product-link">
-                            <div class="product-info">
-                                <h3>Vine Tomatoes</h3>
-                                <p class="price">₹99 / kg</p>
-                            </div>
-                        </a>
-                        <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials-section">
-            <div class="container">
-                <h2>What Our Customers Say</h2>
-                <div class="testimonial-grid">
-                    <!-- Testimonial 1 -->
-                    <div class="testimonial-card">
-                        <div class="testimonial-stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <blockquote>"The produce is always so fresh! Delivery is super fast, and it has made my weekly grocery shopping a breeze."</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://placehold.co/50x50/E2E8F0/475569?text=P" alt="Priya S.">
-                            <p>Priya S.<span>, Mumbai</span></p>
-                        </div>
-                    </div>
-                    <!-- Testimonial 2 -->
-                    <div class="testimonial-card">
-                        <div class="testimonial-stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <blockquote>"I love the wide range of organic products available. BazarBasket is my go-to for healthy and fresh groceries."</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://placehold.co/50x50/E2E8F0/475569?text=R" alt="Rohan K.">
-                            <p>Rohan K.<span>, Delhi</span></p>
-                        </div>
-                    </div>
-                    <!-- Testimonial 3 -->
-                    <div class="testimonial-card">
-                        <div class="testimonial-stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <blockquote>"Excellent customer service and always on-time delivery. Highly recommended for anyone with a busy schedule!"</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://placehold.co/50x50/E2E8F0/475569?text=A" alt="Anjali M.">
-                            <p>Anjali M.<span>, Bangalore</span></p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -358,6 +385,35 @@
             </div>
         </div>
     </footer>
+
+    <!-- Location Selection Modal -->
+    <div class="modal-overlay" id="location-selection-modal">
+        <div class="modal location-modal">
+            <button class="modal-close-btn" aria-label="Close location selector"><i class="fas fa-times"></i></button>
+            <h3>Select Your Delivery Location</h3>
+
+            <div class="location-modal-search">
+                <input type="text" id="location-search-input" placeholder="Search for an area, street, or landmark...">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="location-modal-results">
+                <!-- Search results will be populated here by JavaScript -->
+                <ul>
+                    <!-- Example: -->
+                    <!-- <li>Mumbai, Maharashtra, India</li> -->
+                </ul>
+            </div>
+
+            <button class="btn btn-primary detect-location-btn" id="detect-current-location-btn">
+                <i class="fas fa-crosshairs"></i> Detect Current Location
+            </button>
+
+            <div class="location-map-embed" id="location-map-embed">
+                <!-- Google Map will be embedded here -->
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 

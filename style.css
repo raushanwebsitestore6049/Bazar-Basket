@@ -4,11 +4,17 @@
     --secondary-color: #F2994A; /* A warm, inviting orange */
     --text-color: #333;
     --text-light: #555;
+    --border-color: #eee;
     --bg-color: #F9F9F9;
     --white-color: #fff;
     --border-radius: 12px;
     --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.06);
     --shadow-strong: 0 8px 25px rgba(40, 167, 69, 0.15);
+}
+
+html {
+    font-size: 100%; /* Base font size */
+    scroll-behavior: smooth;
 }
 
 body {
@@ -48,47 +54,33 @@ a {
 
 .main-header .container {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 1rem; /* Add a small gap for smaller screens */
+}
+
+.header-main-content {
+    display: flex;
     align-items: center;
     gap: 2rem;
+    flex-grow: 1; /* Allows this container to take up available space */
 }
 
-/* --- Main Navigation (for mobile) --- */
-.main-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100vh;
-    background: var(--white-color);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    flex-direction: column;
-    padding: 4rem 2rem;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1100; /* Ensure it's above header */
-}
-
-.main-nav.nav-open {
-    transform: translateX(0);
-}
-
-.main-nav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-    list-style: none;
-    padding: 0;
-}
 /* --- Secondary Navigation --- */
 .secondary-nav {
-    background-color: var(--white-color);
-    border-bottom: 1px solid #eee;
+    background-color: var(--white-color); /* Ensures it has a solid background */
+    border-bottom: 1px solid var(--border-color);
 }
 
 .secondary-nav .container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Align to the left for scrolling */
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+/* Hide scrollbar for a cleaner look on webkit browsers */
+.secondary-nav .container::-webkit-scrollbar {
+    display: none;
 }
 
 .secondary-nav ul {
@@ -96,7 +88,9 @@ a {
     padding: 0;
     list-style: none;
     display: flex;
-    gap: 2.5rem;
+    justify-content: center; /* Still center the items within the list */
+    gap: 2rem; /* Add space between nav items */
+    white-space: nowrap; /* Prevent items from wrapping */
 }
 
 .logo-container {
@@ -119,7 +113,8 @@ a {
 }
 
 .logo-title {
-    font-size: 1.6rem;
+    /* Use clamp for fluid font size */
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
     font-weight: 700;
     color: #000; /* Black color for "Bazar" */
 }
@@ -130,23 +125,11 @@ a {
 
 .logo-tagline {
     font-size: 0.8rem;
-    color: var(--text-light);
+    color: var(--text-light); 
     font-weight: 500;
+    white-space: nowrap; /* Prevents the tagline from wrapping */
 }
 
-.location-selector {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-light);
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-.location-selector:hover {
-    background-color: var(--bg-color);
-}
 .search-bar {
     position: relative;
     width: 100%;
@@ -156,7 +139,7 @@ a {
 .search-bar input {
     width: calc(100% - 60px); /* Adjust width for padding */
     padding: 12px 40px 12px 20px;
-    border-radius: 50px;
+    border-radius: var(--border-radius);
     border: 1px solid #eee;
     background-color: #f9f9f9;
     font-family: 'Poppins', sans-serif;
@@ -182,12 +165,14 @@ a {
 .header-actions {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     gap: 1.5rem;
 }
 
 .cart-icon {
     position: relative;
-    font-size: 1.5rem;
+    /* Use clamp for fluid icon size */
+    font-size: clamp(1.3rem, 4vw, 1.5rem);
 }
 
 .cart-count {
@@ -201,6 +186,49 @@ a {
     font-size: 0.75rem;
     font-weight: 600;
 }
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* Use clamp for fluid icon size */
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: var(--text-color);
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.profile-dropdown-content {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 40px;
+    background: var(--white-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    min-width: 150px;
+    padding: 1rem;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.profile-dropdown-content.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.profile-dropdown-content .btn {
+    width: 100%;
+}
 
 .secondary-nav a {
     display: block;
@@ -212,16 +240,6 @@ a {
 
 .secondary-nav a:hover {
     color: var(--primary-color);
-}
-
-/* --- Mobile Navigation Toggles --- */
-.mobile-nav-toggle, .nav-close-btn {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: var(--text-color);
 }
 
 /* --- Buttons --- */
@@ -257,21 +275,33 @@ a {
 /* --- Hero Section --- */
 .hero-slider-section {
     width: 100%;
-    height: 500px;
+    position: relative; /* Needed for nav buttons */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.2rem; /* Remove top padding to reduce gap */
+    padding-bottom: 3rem; /* Keep bottom padding for spacing */
+}
+
+.hero-slider {
+    width: 98%; /* Make it slightly less than full width to see the box effect */
+    margin: auto; /* Center the slider */
     position: relative;
     overflow: hidden;
+    aspect-ratio: 16 / 7; /* Responsive aspect ratio */
+    max-height: 600px; /* Prevents it from getting too tall on wide screens */
+    min-height: 300px; /* Ensures a minimum height on narrow screens */
+    border-radius: var(--border-radius); /* Apply rounded corners */
 }
 
 .hero-slide {
-    position: absolute;
+    position: absolute; /* Slides sit on top of each other */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
     background-position: center;
     display: flex;
-    align-items: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s ease, visibility 1s ease;
@@ -282,34 +312,81 @@ a {
     visibility: visible;
 }
 
-.hero-text {
-    max-width: 50%;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    backdrop-filter: blur(5px);
+/* Slide Background Colors */
+.slide-bg-green, .slide-bg-yellow {
+    /* These are no longer needed as we are using full images */
+    background-color: var(--bg-color); /* Fallback color */
 }
 
-.hero-subtitle {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area, cropping if necessary */
+    animation: zoomIn 1s ease-out;
 }
 
-.hero-section h1 {
-    font-size: 3.8rem;
-    line-height: 1.2;
-    margin-bottom: 1rem;
+/* Remove unused hero text styles */
+.hero-slide-container, .hero-text, .hero-image-box, .hero-subtitle, .hero-text h1, .hero-text p {
+    display: none;
 }
 
-.hero-section p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+/* Slider Navigation Buttons */
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #eee;
+    color: var(--text-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-primary i {
-    margin-left: 8px;
+.slider-nav:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.slider-nav.prev {
+    left: 30px;
+}
+
+.slider-nav.next {
+    right: 30px;
+}
+
+/* Slider Pagination */
+.slider-pagination {
+    display: flex;
+    gap: 8px; /* Reduced gap between dots */
+    z-index: 10;
+    margin-top: 1rem; /* Add space between slider and pagination */
+}
+
+.pagination-dot {
+    width: 12px; /* Dot size */
+    height: 12px; /* Dot size */
+    border-radius: 50%; /* Make it a circle */
+    background-color: var(--white-color); /* Inactive dot color (white) */
+    border: 2px solid var(--text-color); /* Inactive dot border (black) */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0;
+}
+
+.pagination-dot:hover {
+    background-color: #ccc; /* Hover effect */
+}
+.pagination-dot.active {
+    background-color: var(--text-color); /* Active dot color (black) */
 }
 
 /* --- Sections General --- */
@@ -326,13 +403,14 @@ section h2 {
 
 /* --- Features Section --- */
 .features-section .container {
+    margin-top: 3rem; /* Add space above the features section */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Ensures a single line of three items */
     gap: 2rem;
     background-color: var(--white-color);
     padding: 2.5rem;
     border-radius: var(--border-radius);
-    transform: translateY(-60px); /* Pulls it up into the hero section */
+    /* transform: translateY(-60px); */ /* This was pulling the section up, causing the overlap. */
     box-shadow: var(--shadow-strong);
 }
 
@@ -366,12 +444,11 @@ section h2 {
 }
 
 /* --- Category Grid --- */
-.categories-section { padding-top: 0; } /* Remove padding because of the overlapping features */
 .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
     gap: 2rem;
     text-align: center;
+    padding: 0.5rem 20px; /* Add padding for spacing inside the scroll area */
 }
 .category-grid a {
     text-decoration: none;
@@ -379,8 +456,14 @@ section h2 {
 }
 
 .category-card {
+    width: 180px; /* Give cards a fixed width */
+    flex-shrink: 0; /* Prevent cards from shrinking */
+    display: flex; /* Use flexbox to manage content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background: var(--white-color);    
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     transition: all 0.3s ease;
@@ -401,12 +484,15 @@ section h2 {
 
 /* --- Product Grid --- */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
     gap: 2rem;
+    /* Add padding to the grid itself for spacing inside the scroll area */
+    padding: 0.5rem 20px;
 }
 
 .product-card {
+    width: 280px; /* Fixed width for horizontal scrolling */
+    flex-shrink: 0; /* Prevent cards from shrinking */
     background: var(--white-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
@@ -419,6 +505,7 @@ section h2 {
 .product-card:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-strong);
+    z-index: 5; /* Ensure the hovered card is on top of others */
 }
 
 .product-image-container {
@@ -542,10 +629,12 @@ section h2 {
 }
 
 .brands-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: flex;
     gap: 2rem;
     align-items: center;
+    /* Add padding to the grid itself for spacing inside the scroll area */
+    padding: 0.5rem 20px;
+    padding-bottom: 1rem; /* Space for scrollbar */
 }
 
 .brand-logo {
@@ -553,6 +642,8 @@ section h2 {
     filter: grayscale(100%);
     opacity: 0.6;
     transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent logos from shrinking */
+    width: 150px;
 }
 
 .brand-logo:hover {
@@ -565,49 +656,28 @@ section h2 {
     object-fit: contain;
 }
 /* --- Responsive Design --- */
-@media (max-width: 992px) {
-    .search-bar {
-        order: 1;
-        flex-basis: 100%;
-        margin-top: 1rem;
-        max-width: none;
+@media (max-width: 1024px) {
+    .header-main-content {
+        gap: 1.5rem;
     }
 
-    .logo-container { order: 0; }
-    .location-selector { display: none; } /* Hide location on mobile for simplicity */
-    .secondary-nav { display: none; } /* Hide secondary nav on mobile */
-    .header-actions { order: 2; }    .main-header .container > nav { display: block; } /* Show main nav for mobile setup */
-    .main-header .container > nav { display: block; }
-    .mobile-nav-toggle { order: 3; display: block; }
+    .search-bar { display: none; } /* Hide search bar on tablets, can be moved to mobile nav */
+    .location-selector { display: none; } /* Hide location selector on tablets */
 
-    .main-nav-placeholder { /* This is a placeholder, the real nav is the fixed one */
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 300px;
-        height: 100vh;
-        background: var(--white-color);
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-        flex-direction: column;
-        padding: 4rem 2rem;
-        transform: translateX(100%);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .nav-close-btn {
-        display: block;
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-    }
+    /* The .secondary-nav was previously hidden here. It is now always visible. */
 
     .hero-slide { justify-content: center; text-align: center; }
-    .hero-text {
-        max-width: 100%;
+
+    .hero-slide-container {
+        flex-direction: column;
+        display: none; /* Hide the container as it's no longer used */
+        justify-content: center;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 
-    .hero-section h1 {
-        font-size: 2.5rem;
+    .hero-text h1 {
+        font-size: 2.8rem;
     }
 
     section h2 {
@@ -615,14 +685,77 @@ section h2 {
     }
 
     .features-section .container {
-        transform: translateY(-30%);
+        transform: translateY(0);
+        padding: 1.5rem;
+    }
+
+    .listing-container, .profile-container, .checkout-container, .contact-container, .about-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-main-content {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .profile-sidebar {
+        position: static;
+    }
+
+    .product-grid, .brands-grid, .testimonial-grid {
+        /* Ensure flex display is maintained for horizontal scrolling on tablets */
+        display: flex;
     }
 }
 
 @media (max-width: 768px) {
-    .hero-section {
-        padding-bottom: 6rem;
+    html { font-size: 90%; } /* Reduce base font size for smaller devices */
+    .hero-slider-section { height: auto; }
+
+    .logo-tagline {
+        display: none; /* Hide tagline on small screens for more space */
     }
+
+    .features-section .container {
+        grid-template-columns: repeat(3, 1fr); /* Keep features in a single row */
+        gap: 0.5rem; /* Reduce gap between cards */
+        padding: 1.5rem 1rem; /* Reduce padding */
+    }
+
+    .feature-card i {
+        font-size: 1.5rem;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .feature-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .feature-card p {
+        font-size: 0.75rem;
+    }
+
+    .testimonial-card {
+        width: 300px; /* Make cards a bit smaller on mobile */
+        padding: 1.5rem;
+    }
+
+    .testimonial-card blockquote {
+        font-size: 0.9rem; /* Reduce feedback text size */
+        margin-bottom: 1rem;
+    }
+
+    /* Adjust slider nav for smaller screens instead of hiding */
+    .slider-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    .slider-nav.prev { left: 15px; }
+    .slider-nav.next { right: 15px; }
+
     .listing-container, .checkout-container, .cart-container, .product-details-container {
         grid-template-columns: 1fr;
     }
@@ -630,11 +763,70 @@ section h2 {
     .cart-summary {
         position: static; /* Unstick the summary on mobile */
     }
+
+    .footer-content {
+        text-align: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .product-grid, .brands-grid, .testimonial-grid {
+        /* Ensure flex display is maintained for horizontal scrolling on mobile */
+        display: flex;
+    }
+
+    .form-container {
+        padding: 2rem;
+    }
+
+    .hero-text h1 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    section {
+        padding: 2rem 0;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .slider-nav.prev {
+        left: 10px;
+    }
+    .slider-nav.next {
+        right: 10px;
+    }
+}
+
+/* Keyframe Animations for Hero Content */
+@keyframes slideInFromLeft {
+    0% { transform: translateX(-50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(1.1); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 /* --- Form Pages (Login, Register, etc.) --- */
 .form-section {
-    padding: 5rem 0;
+    padding: 3rem 0;
     background-color: var(--bg-color);
     min-height: 70vh;
     display: flex;
@@ -747,7 +939,7 @@ section h2 {
 
 .filter-group h5 {
     margin: 0 0 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border-bottom: 1px solid #eee;
     padding-bottom: 0.5rem;
 }
@@ -886,16 +1078,22 @@ section h2 {
 }
 
 .testimonial-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
     gap: 2rem;
+    /* Add padding to the grid itself for spacing inside the scroll area */
+    padding: 0.5rem 20px;
 }
 
 .testimonial-card {
+    width: 350px; /* Fixed width for horizontal scrolling */
+    flex-shrink: 0; /* Prevent cards from shrinking */
     background-color: var(--bg-color);
     padding: 2rem;
     border-radius: var(--border-radius);
     border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .testimonial-stars {
@@ -1440,8 +1638,6 @@ section h2 {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     padding: 1.5rem;
-    position: sticky;
-    top: 120px;
 }
 
 .profile-user {
@@ -1488,7 +1684,7 @@ section h2 {
 .profile-nav li a:hover,
 .profile-nav li a.active {
     background-color: #eaf7ee;
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
     font-weight: 600;
 }
 
@@ -1626,6 +1822,34 @@ section h2 {
     justify-content: center;
     gap: 1rem;
 }
+
+.location-modal {
+    max-width: 500px;
+    width: 90%;
+    text-align: left;
+    position: relative;
+}
+
+.location-modal-search {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.location-modal-search input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border-radius: var(--border-radius);
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.location-modal-search i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 /* --- Product Details Page --- */
 .product-details-section {
     padding: 4rem 0;
@@ -1744,7 +1968,6 @@ section h2 {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     position: sticky;
-    top: 120px;
 }
 
 .cart-summary h3 {
@@ -1772,4 +1995,31 @@ section h2 {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #eee;
+}
+
+/* --- Scroll Wrapper for Horizontal Rows --- */
+.scroll-wrapper {
+    overflow-x: auto;
+    padding-bottom: 1rem; /* Add space for the scrollbar without content overlap */
+    /* Improve scrolling behavior on touch devices */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    margin: 0 -20px; /* Counteract the container's padding to allow full-bleed scrolling */
+}
+
+/* Hide scrollbar for a cleaner look */
+.scroll-wrapper::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+.scroll-wrapper {
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    scrollbar-width: none;  /* For Firefox */
+}
+
+/* Add scroll-snap alignment to the direct children of the scrolling grids */
+.scroll-wrapper > .product-grid > *,
+.scroll-wrapper > .brands-grid > *,
+.scroll-wrapper > .category-grid > *,
+.scroll-wrapper > .testimonial-grid > * {
+    scroll-snap-align: start;
 }
