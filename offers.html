@@ -1,0 +1,123 @@
+<!-- Top Header -->
+<header class="page-header">
+    <h1 class="page-title">Mega Deals & Offers 🔥</h1>
+    <p class="page-subtitle">Handpicked discount offers across all categories</p>
+</header>
+
+<!-- Promo Banner -->
+<div class="hero-banner">
+    <div class="banner-text">
+        <h3>Extra 15% Cashback</h3>
+        <p>On orders above ₹499 | Code: <b>SAVE15</b></p>
+    </div>
+    <span class="banner-badge">Use Code</span>
+</div>
+
+<!-- Interactive Category Filters -->
+<div class="category-filters">
+    <button class="filter-btn active" onclick="filterCategory('all', this)">All Deals</button>
+    <button class="filter-btn" onclick="filterCategory('vegetables', this)">Vegetables</button>
+    <button class="filter-btn" onclick="filterCategory('fruits', this)">Fruits</button>
+    <button class="filter-btn" onclick="filterCategory('dairy', this)">Dairy</button>
+    <button class="filter-btn" onclick="filterCategory('snacks', this)">Snacks</button>
+</div>
+
+<!-- Product Grid -->
+<div class="product-grid" id="productGrid">
+
+    <!-- Item 1: Fruits -->
+    <div class="product-card" data-category="fruits" data-id="p1" data-name="Nagpur Oranges" data-price="80" data-icon="🍊" data-icon-bg="bg-fruit">
+        <span class="offer-badge bg-red">20% OFF</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-fruit">🍊</div>
+        <div class="category-tag">Fruits</div>
+        <div class="product-name">Nagpur Oranges</div>
+        <div class="product-price">
+            <span class="price-old">₹100</span>
+            <span class="price-current">₹80</span> / kg
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+    <!-- Item 2: Vegetables -->
+    <div class="product-card" data-category="vegetables" data-id="p2" data-name="Fresh Cucumber" data-price="42.5" data-icon="🥒" data-icon-bg="bg-veg">
+        <span class="offer-badge bg-orange">15% OFF</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-veg">🥒</div>
+        <div class="category-tag">Vegetables</div>
+        <div class="product-name">Fresh Cucumber</div>
+        <div class="product-price">
+            <span class="price-old">₹50</span>
+            <span class="price-current">₹42.50</span> / kg
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+    <!-- Item 3: Dairy -->
+    <div class="product-card" data-category="dairy" data-id="p3" data-name="Amul Butter" data-price="58" data-icon="🧈" data-icon-bg="bg-dairy">
+        <span class="offer-badge bg-purple">BUY 1 GET 1</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-dairy">🧈</div>
+        <div class="category-tag">Dairy</div>
+        <div class="product-name">Amul Butter</div>
+        <div class="product-price">
+            <span class="price-current">₹58</span> / 100g
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+    <!-- Item 4: Snacks -->
+    <div class="product-card" data-category="snacks" data-id="p4" data-name="Potato Chips" data-price="21" data-icon="🍟" data-icon-bg="bg-snack">
+        <span class="offer-badge bg-blue">30% OFF</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-snack">🍟</div>
+        <div class="category-tag">Snacks</div>
+        <div class="product-name">Potato Chips</div>
+        <div class="product-price">
+            <span class="price-old">₹30</span>
+            <span class="price-current">₹21</span> / pack
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+    <!-- Item 5: Vegetables -->
+    <div class="product-card" data-category="vegetables" data-id="p5" data-name="Vine Tomatoes" data-price="60" data-icon="🍅" data-icon-bg="bg-veg">
+        <span class="offer-badge bg-red">25% OFF</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-veg">🍅</div>
+        <div class="category-tag">Vegetables</div>
+        <div class="product-name">Vine Tomatoes</div>
+        <div class="product-price">
+            <span class="price-old">₹80</span>
+            <span class="price-current">₹60</span> / kg
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+    <!-- Item 6: Fruits -->
+    <div class="product-card" data-category="fruits" data-id="p6" data-name="Robusta Bananas" data-price="45" data-icon="🍌" data-icon-bg="bg-fruit">
+        <span class="offer-badge bg-orange">SPECIAL DEAL</span>
+        <button class="quick-view-btn" aria-label="Quick view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+        <div class="product-img bg-fruit">🍌</div>
+        <div class="category-tag">Fruits</div>
+        <div class="product-name">Robusta Bananas</div>
+        <div class="product-price">
+            <span class="price-old">₹60</span>
+            <span class="price-current">₹45</span> / dozen
+        </div>
+        <button class="btn-add">Add</button>
+    </div>
+
+</div>

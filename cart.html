@@ -1,0 +1,116 @@
+<!-- Header -->
+<header class="cart-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <h1 class="cart-title">Your Cart</h1>
+        <span class="item-count-badge" id="cartBadge">3 Items</span>
+    </div>
+    <button class="clear-btn" onclick="clearCart()">Clear All</button>
+</header>
+
+<!-- Main Content Grid Area -->
+<main class="cart-main-grid">
+
+    <!-- Left Column: Items List & Superfast Note -->
+    <div class="cart-left-column" id="cartLeftSection">
+
+        <!-- Delivery Time Note -->
+        <div class="delivery-note" id="deliveryNote">
+            <span>🚀</span>
+            <span>Superfast delivery in <b>10-15 mins</b> to your home!</span>
+        </div>
+
+        <!-- Cart Items List -->
+        <div class="cart-items-list" id="cartList">
+
+            <!-- Item 1 -->
+            <div class="cart-item" id="item-1" data-price="120">
+                <div class="item-icon bg-broccoli">🥦</div>
+                <div class="item-details">
+                    <div class="item-name">Fresh Broccoli</div>
+                    <div class="item-unit">₹120 / kg</div>
+                    <div class="item-price">₹<span class="item-total">120</span></div>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="updateQty('item-1', -1)">-</button>
+                    <span class="qty-number" id="qty-item-1">1</span>
+                    <button class="qty-btn" onclick="updateQty('item-1', 1)">+</button>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="cart-item" id="item-2" data-price="180">
+                <div class="item-icon bg-apples">🍎</div>
+                <div class="item-details">
+                    <div class="item-name">Shimla Apples</div>
+                    <div class="item-unit">₹180 / kg</div>
+                    <div class="item-price">₹<span class="item-total">360</span></div>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="updateQty('item-2', -1)">-</button>
+                    <span class="qty-number" id="qty-item-2">2</span>
+                    <button class="qty-btn" onclick="updateQty('item-2', 1)">+</button>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="cart-item" id="item-3" data-price="65">
+                <div class="item-icon bg-milk">🥛</div>
+                <div class="item-details">
+                    <div class="item-name">Toned Milk</div>
+                    <div class="item-unit">₹65 / litre</div>
+                    <div class="item-price">₹<span class="item-total">65</span></div>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="updateQty('item-3', -1)">-</button>
+                    <span class="qty-number" id="qty-item-3">1</span>
+                    <button class="qty-btn" onclick="updateQty('item-3', 1)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Promo, Summary & Checkout -->
+    <div class="cart-right-column" id="cartRightSection">
+        <!-- Promo Code Box -->
+        <div class="promo-box" id="promoBox">
+            <input type="text" class="promo-input" placeholder="Enter Promo Code (Try: FRESH10)">
+            <button class="promo-btn" onclick="applyPromo()">Apply</button>
+        </div>
+
+        <!-- Bill Summary -->
+        <div class="bill-summary" id="billSummary">
+            <div class="bill-title">Bill Details</div>
+            <div class="bill-row">
+                <span>Items Subtotal</span>
+                <span>₹<span id="subtotalVal">545</span></span>
+            </div>
+            <div class="bill-row">
+                <span>Delivery Charge</span>
+                <span class="free-tag">FREE</span>
+            </div>
+            <div class="bill-row">
+                <span>Handling & Taxes</span>
+                <span>₹15</span>
+            </div>
+            <div class="bill-row total">
+                <span>Grand Total</span>
+                <span>₹<span id="grandTotalVal">560</span></span>
+            </div>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="checkout-section" id="checkoutSection">
+            <button class="checkout-btn">
+                <span>Proceed to Pay</span>
+                <span>₹<span id="btnTotalVal">560</span> →</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Empty Cart View -->
+    <div class="empty-cart" id="emptyCartState">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-title">Your Cart is Empty</div>
+        <div class="empty-subtitle">Looks like you haven't added anything to your cart yet.</div>
+    </div>
+</main>
