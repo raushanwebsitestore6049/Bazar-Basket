@@ -3,419 +3,1204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BazarBasket - Fresh Groceries Delivered</title>
-    <link rel="stylesheet" href="style.css">
+    <title>BazarBasket - Fresh Grocery Everyday</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="BazarBasket-Logo.png">
-    <!-- Using a modern version of Font Awesome for better icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js CSS for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f4f5f7;
+            color: #1c1c1c;
+            padding-bottom: 90px;
+        }
+
+        /* Fluid Main Container */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        /* ==========================================
+           HEADER DESIGN MATCHING PROVIDED IMAGE
+        =========================================== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            gap: 20px;
+        }
+
+        /* Logo and Brand Name */
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+
+        .brand-text-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #000000; /* 'Bazar' in bold black */
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .logo-title span {
+            color: #27ae60; /* 'Basket' in exact vibrant green */
+        }
+
+        .logo-tagline {
+            font-size: 10px;
+            color: #555555;
+            font-weight: 500;
+            margin-top: 3px;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        /* Search Bar Exact Matching Image */
+        .search-box {
+            flex: 1;
+            max-width: 480px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 42px 11px 18px;
+            background-color: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 13.5px;
+            color: #333;
+            outline: none;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input::placeholder {
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .search-box input:focus {
+            border-color: #27ae60;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+
+        .search-box svg {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: #4a5568;
+            stroke-width: 2.2;
+            cursor: pointer;
+        }
+
+        /* Location Indicator Right of Search Box */
+        .header-location-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .header-location-tag:hover {
+            background-color: #f7fafc;
+        }
+
+        .header-location-tag svg {
+            width: 16px;
+            height: 16px;
+            fill: #2d3748;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Profile Icon & Menu */
+        .profile-wrapper {
+            position: relative;
+        }
+
+        .profile-btn {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .profile-btn:hover {
+            background-color: #eaf5ee;
+        }
+
+        .profile-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #2d3748;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 46px;
+            right: 0;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border: 1px solid #f0f0f0;
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            width: 140px;
+            z-index: 200;
+        }
+
+        .profile-dropdown.show {
+            display: flex;
+        }
+
+        .dropdown-btn {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .btn-login {
+            background-color: #27ae60;
+            color: #ffffff;
+        }
+
+        .btn-login:hover {
+            background-color: #219653;
+        }
+
+        .btn-signup {
+            background-color: #f8f9fa;
+            color: #1c1c1c;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-signup:hover {
+            background-color: #edf2f7;
+        }
+
+        /* ==========================================
+           LOCATION SELECTOR MODAL POPUP
+        =========================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .location-modal {
+            background-color: #ffffff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .modal-search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .modal-search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .modal-search-box input:focus {
+            border-color: #27ae60;
+        }
+
+        .modal-search-box svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: #27ae60;
+        }
+
+        .detect-location-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background-color: #eaf5ee;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            border-radius: 12px;
+            color: #27ae60;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .detect-location-btn:hover {
+            background-color: #d6ebd9;
+        }
+
+        .map-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-view-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .view-btn-group {
+            display: flex;
+            background-color: #f0f0f0;
+            padding: 3px;
+            border-radius: 8px;
+            gap: 2px;
+        }
+
+        .view-btn {
+            border: none;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background-color: #ffffff;
+            color: #27ae60;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 220px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .confirm-loc-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #27ae60;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .confirm-loc-btn:hover {
+            background-color: #219653;
+        }
+
+        /* ==========================================
+           PAGE VIEWS & COMMON STYLES
+        =========================================== */
+        .page-view { display: none; }
+        .page-view.active-page { display: block; }
+        .content-padding { padding: 0 20px; }
+        .section-title { font-size: 20px; font-weight: 700; margin: 24px 0 16px 0; color: #1c1c1c; }
+
+        .category-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px; }
+        .category-card { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; cursor: pointer; }
+        .category-icon { width: 100%; aspect-ratio: 1 / 1; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 8px; transition: transform 0.2s; }
+        .category-card:hover .category-icon { transform: translateY(-3px); }
+
+        .bg-fruits { background-color: #eef7ed; }
+        .bg-bakery { background-color: #fdf3e7; }
+        .bg-dairy  { background-color: #eaf4fc; }
+        .bg-meat   { background-color: #fdeaea; }
+        .bg-atta   { background-color: #fef5e7; }
+        .bg-oil    { background-color: #fff9e6; }
+        .bg-dryfruits { background-color: #f5efe6; }
+        .bg-kitchen { background-color: #e8f4f8; }
+
+        .category-card span { font-size: 12px; font-weight: 600; line-height: 1.2; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .product-card { border: 1px solid #f0f0f0; border-radius: 14px; padding: 14px; background-color: #ffffff; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-2px); }
+
+        .badge { position: absolute; top: 10px; left: 10px; background-color: #e53935; color: #ffffff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; z-index: 2; }
+        .product-img { width: 100%; height: 110px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 42px; }
+        .product-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #2e3330; }
+        .product-price { font-size: 13px; color: #666; margin-bottom: 12px; }
+        .price-current { font-weight: 700; color: #27ae60; }
+        .price-old { text-decoration: line-through; color: #999; font-weight: 400; font-size: 12px; margin-right: 4px; }
+
+        .btn-add { margin-top: auto; width: 100%; padding: 9px; background-color: #ffffff; border: 1px solid #27ae60; color: #27ae60; font-weight: 600; font-size: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .btn-add:hover { background-color: #27ae60; color: #ffffff; }
+
+        .hero-slider-container { position: relative; margin: 16px 20px; border-radius: 16px; overflow: hidden; }
+        .slider-wrapper { display: flex; transition: transform 0.4s ease-in-out; width: 100%; }
+        .slide-item { min-width: 100%; height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 30px 40px; color: #ffffff; position: relative; }
+        .slide-1 { background: linear-gradient(135deg, #1d976c, #93f9b9); }
+        .slide-2 { background: linear-gradient(135deg, #ff8008, #ffc837); }
+        .slide-3 { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+        .slide-4 { background: linear-gradient(135deg, #ee0979, #ff6a00); }
+        .slide-5 { background: linear-gradient(135deg, #8e24aa, #ce93d8); }
+
+        .slide-item h3 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+        .slide-item p { font-size: 13px; margin-bottom: 14px; }
+        .slide-btn { align-self: flex-start; padding: 8px 18px; background-color: #ffffff; color: #1c1c1c; border-radius: 20px; font-size: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background-color: rgba(255, 255, 255, 0.9); border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        .arrow-left { left: 10px; }
+        .arrow-right { right: 10px; }
+
+        .dots-indicator { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.5); cursor: pointer; }
+        .dot.active { background-color: #ffffff; width: 18px; border-radius: 10px; }
+
+        .brands-slider { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+        .brands-slider::-webkit-scrollbar { display: none; }
+        .brand-chip { flex: 0 0 auto; padding: 10px 20px; background-color: #f7f9f8; border: 1px solid #e8ece9; border-radius: 20px; font-size: 13px; font-weight: 600; }
+
+        .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .review-card { background-color: #f9fbf9; border: 1px solid #eef2ef; border-radius: 14px; padding: 16px; }
+        .stars { color: #ffb400; font-size: 13px; margin-bottom: 8px; }
+        .review-text { font-size: 13px; color: #444; font-style: italic; border-left: 3px solid #27ae60; padding-left: 10px; margin-bottom: 12px; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; padding: 24px; background-color: #f9fbf9; border-radius: 16px; text-align: center; }
+        .feature-icon { font-size: 24px; margin-bottom: 6px; }
+        .feature-title { font-size: 13px; font-weight: 700; }
+        .feature-desc { font-size: 11px; color: #777; }
+
+        .site-footer { background-color: #2b2e2c; color: #ffffff; padding: 32px 20px 40px; margin-top: 32px; border-radius: 20px 20px 0 0; }
+        .footer-brand { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .footer-desc { font-size: 12px; color: #aaa; margin-bottom: 20px; }
+        .footer-columns { display: flex; gap: 40px; margin-bottom: 20px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 6px; }
+        .footer-links a { color: #aaa; text-decoration: none; font-size: 12px; cursor: pointer; }
+        .footer-bottom { border-top: 1px solid #3d413e; padding-top: 16px; text-align: center; font-size: 11px; color: #888; }
+
+        /* Cart Page Specifics */
+        .cart-items-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+        .cart-item { display: flex; align-items: center; gap: 14px; border: 1px solid #f0f0f0; border-radius: 14px; padding: 12px 16px; background-color: #ffffff; }
+        .item-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+        .item-details { flex: 1; }
+        .item-name { font-size: 14px; font-weight: 600; }
+        .item-unit { font-size: 12px; color: #777; }
+        .item-price { font-size: 14px; font-weight: 700; color: #27ae60; }
+
+        .qty-controls { display: flex; align-items: center; gap: 8px; background-color: #f7f9f8; border: 1px solid #e8ece9; border-radius: 20px; padding: 4px 8px; }
+        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: none; background-color: #ffffff; font-weight: 700; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        .bill-summary { background-color: #fafafa; border-radius: 14px; padding: 18px; border: 1px solid #f0f0f0; margin-bottom: 20px; }
+        .bill-row { display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-bottom: 8px; }
+        .bill-row.total { color: #1c1c1c; font-weight: 700; font-size: 15px; border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 10px; }
+
+        .checkout-btn { width: 100%; padding: 14px; background-color: #27ae60; color: #ffffff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+        .category-filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; }
+        .category-filters::-webkit-scrollbar { display: none; }
+        .filter-btn { padding: 8px 16px; border-radius: 20px; background-color: #f7f9f8; border: 1px solid #e8ece9; font-size: 13px; font-weight: 600; color: #555; cursor: pointer; white-space: nowrap; }
+        .filter-btn.active-filter { background-color: #eaf5ee; border-color: #27ae60; color: #27ae60; }
+
+        .back-to-top { position: fixed; bottom: 84px; right: 24px; width: 42px; height: 42px; background-color: #27ae60; color: #ffffff; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+
+        .bottom-nav { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 440px; background-color: #ffffff; border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 6px 8px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12); border: 1px solid rgba(0, 0, 0, 0.05); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #2e3330; flex: 1; padding: 8px 0; border-radius: 30px; cursor: pointer; }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 3px; stroke: #2e3330; fill: none; stroke-width: 2; }
+        .nav-item span { font-size: 12px; font-weight: 500; }
+
+        .nav-item.active { background-color: #eaf5ee; color: #27ae60; }
+        .nav-item.active svg { stroke: #27ae60; }
+        .nav-item.active span { font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .category-grid { grid-template-columns: repeat(6, 1fr); }
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Mobile View Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .site-header { 
+                padding: 10px 14px; 
+                flex-wrap: wrap; 
+                gap: 10px;
+            }
+
+            .search-box {
+                order: 3;
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .logo-tagline { display: none; }
+            .category-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .reviews-grid { display: flex; overflow-x: auto; scrollbar-width: none; }
+            .review-card { flex: 0 0 250px; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-main-content">
-                <a href="index.html" class="logo-container">
-                    <img src="BazarBasket-Logo.png" alt="BazarBasket Logo" class="logo-img">
-                    <div class="logo-text">
-                        <span class="logo-title">Bazar<span class="logo-title-green">Basket</span></span>
-                        <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+    <div class="app-container">
+
+        <!-- HEADER BAR MATCHING GIVEN IMAGE -->
+        <header class="site-header">
+            <!-- Brand Section (Logo Icon + BazarBasket + Tagline) -->
+            <div class="brand-section" onclick="switchPage('homePage', 'navHome')">
+                <svg class="logo-icon" viewBox="0 0 100 100">
+                    <path d="M 20,40 Q 20,20 50,20 Q 80,20 80,40 L 75,80 Q 75,90 50,90 Q 25,90 25,80 Z" fill="#27ae60" />
+                    <path d="M 30,35 Q 30,10 50,10 Q 70,10 70,35" fill="none" stroke="#2980b9" stroke-width="12" stroke-linecap="round" />
+                    <circle cx="42" cy="55" r="7" fill="#e74c3c" />
+                    <circle cx="58" cy="55" r="8" fill="#f39c12" />
+                    <circle cx="50" cy="45" r="6" fill="#27ae60" />
+                </svg>
+                <div class="brand-text-container">
+                    <span class="logo-title">Bazar<span>Basket</span></span>
+                    <span class="logo-tagline">--Fresh Grocery , Everyday --</span>
+                </div>
+            </div>
+
+            <!-- Search Bar Input Box -->
+            <div class="search-box">
+                <input type="text" placeholder="Search for fresh groceries...">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+
+            <!-- Location Selector Tag -->
+            <div class="header-location-tag" onclick="openLocationModal()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                <span id="currentLocText">Gaya, Bihar - 823001</span>
+            </div>
+
+            <!-- Profile Dropdown Button -->
+            <div class="header-actions">
+                <div class="profile-wrapper">
+                    <button class="profile-btn" onclick="toggleProfileMenu(event)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
+
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <button class="dropdown-btn btn-login" onclick="alert('Login Clicked')">Log In</button>
+                        <button class="dropdown-btn btn-signup" onclick="alert('Sign Up Clicked')">Sign Up</button>
                     </div>
-                </a>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search for fresh groceries...">
-                    <i class="fas fa-search"></i>
                 </div>
-                <div class="location-selector" id="header-location-selector">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span id="selected-location-text">Mumbai, 400001</span>
+            </div>
+        </header>
+
+        <!-- PAGE 1: HOME PAGE -->
+        <div id="homePage" class="page-view active-page">
+            <div class="hero-slider-container">
+                <button class="slider-arrow arrow-left" onclick="moveSlide(-1)">❮</button>
+                <button class="slider-arrow arrow-right" onclick="moveSlide(1)">❯</button>
+
+                <div class="slider-wrapper" id="sliderWrapper">
+                    <div class="slide-item slide-1">
+                        <h3>NEW ARRIVAL</h3>
+                        <p>Fresh Farm Produce Direct to Door</p>
+                        <a href="#" class="slide-btn">Shop Now</a>
+                    </div>
+                    <div class="slide-item slide-2">
+                        <h3>JUICY PICKS</h3>
+                        <p>Up to 30% OFF Seasonal Fruits</p>
+                        <a href="#" class="slide-btn">Grab Deal</a>
+                    </div>
+                    <div class="slide-item slide-3">
+                        <h3>ORGANIC CHOICE</h3>
+                        <p>Pure Fruits Grown Naturally</p>
+                        <a href="#" class="slide-btn">Explore</a>
+                    </div>
+                    <div class="slide-item slide-4">
+                        <h3>SWEET DEALS</h3>
+                        <p>Flat ₹50 OFF on First Order</p>
+                        <a href="#" class="slide-btn">Claim Offer</a>
+                    </div>
+                    <div class="slide-item slide-5">
+                        <h3>MARKET FAVORITES</h3>
+                        <p>Daily Essentials at Best Prices</p>
+                        <a href="#" class="slide-btn">View All</a>
+                    </div>
                 </div>
-                <div class="header-actions">
-                    <a href="shopping-cart.html" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">3</span>
+
+                <div class="dots-indicator">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
+                    <span class="dot" onclick="goToSlide(4)"></span>
+                </div>
+            </div>
+
+            <main class="content-padding">
+                <h2 class="section-title">Shop by Category</h2>
+                <div class="category-grid">
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-fruits">🥦</div>
+                        <span>Vegetables</span>
                     </a>
-                    <div class="profile-dropdown">
-                        <button class="profile-btn" aria-label="User account">
-                            <i class="fas fa-user-circle"></i>
-                        </button>
-                        <div class="profile-dropdown-content">
-                            <a href="login.html" class="btn btn-primary">Login</a>
-                            <a href="register.html" class="btn btn-secondary">Sign Up</a>
-                        </div>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-bakery">🍎</div>
+                        <span>Fruits</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-dairy">🥛</div>
+                        <span>Dairy & Eggs</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-meat">🍗</div>
+                        <span>Meat & Fish</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-atta">🌾</div>
+                        <span>Atta & Rice</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-oil">🛢️</div>
+                        <span>Oil & Ghee</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-dryfruits">🥜</div>
+                        <span>Dry Fruits</span>
+                    </a>
+                    <a onclick="switchPage('categoryPage', 'navCategories')" class="category-card">
+                        <div class="category-icon bg-kitchen">🍳</div>
+                        <span>Kitchen</span>
+                    </a>
+                </div>
+
+                <h2 class="section-title">Featured Products</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-img bg-fruits">🥦</div>
+                        <div class="product-name">Fresh Broccoli</div>
+                        <div class="product-price"><span class="price-current">₹120</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img bg-bakery">🍎</div>
+                        <div class="product-name">Shimla Apples</div>
+                        <div class="product-price"><span class="price-current">₹180</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img bg-dairy">🥛</div>
+                        <div class="product-name">Toned Milk</div>
+                        <div class="product-price"><span class="price-current">₹65</span> / litre</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img bg-meat">🍗</div>
+                        <div class="product-name">Chicken Curry Cut</div>
+                        <div class="product-price"><span class="price-current">₹250</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
                     </div>
                 </div>
-            </div>
+
+                <h2 class="section-title">Today's Offers</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <span class="badge">20% OFF</span>
+                        <div class="product-img bg-bakery">🍊</div>
+                        <div class="product-name">Nagpur Oranges</div>
+                        <div class="product-price"><span class="price-old">₹100</span><span class="price-current">₹80</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <span class="badge">15% OFF</span>
+                        <div class="product-img bg-fruits">🥒</div>
+                        <div class="product-name">Fresh Cucumber</div>
+                        <div class="product-price"><span class="price-old">₹50</span><span class="price-current">₹42.50</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Top Brands</h2>
+                <div class="brands-slider">
+                    <div class="brand-chip">Amul</div>
+                    <div class="brand-chip">Nestle</div>
+                    <div class="brand-chip">Mother Dairy</div>
+                    <div class="brand-chip">Britannia</div>
+                    <div class="brand-chip">Tata Sampann</div>
+                </div>
+
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <div class="review-text">"The produce is always so fresh! Delivery is super fast."</div>
+                        <div class="reviewer-name">Priya S. (Mumbai)</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <div class="review-text">"I love the wide range of organic products available."</div>
+                        <div class="reviewer-name">Rohan K. (Delhi)</div>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★☆</div>
+                        <div class="review-text">"Excellent customer service and always on-time delivery."</div>
+                        <div class="reviewer-name">Anjali M. (Bangalore)</div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🚚</div>
+                        <div class="feature-title">Fast Delivery</div>
+                        <div class="feature-desc">Within 60 mins</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌿</div>
+                        <div class="feature-title">Always Fresh</div>
+                        <div class="feature-desc">From local farms</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🏅</div>
+                        <div class="feature-title">Superior Quality</div>
+                        <div class="feature-desc">Quality guaranteed</div>
+                    </div>
+                </div>
+            </main>
         </div>
-    </header>
 
-    <!-- Secondary Navigation -->
-    <nav class="secondary-nav">
-        <div class="container">
-            <div class="secondary-nav-links">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="categories.html">Categories</a></li>
-                    <li><a href="#">Deals</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
+        <!-- PAGE 2: CATEGORIES PAGE -->
+        <div id="categoryPage" class="page-view">
+            <main class="content-padding">
+                <h2 class="section-title">All Categories</h2>
+                
+                <h3 style="font-size: 16px; margin: 16px 0 10px;">Fresh Produce</h3>
+                <div class="category-grid">
+                    <div class="category-card"><div class="category-icon bg-fruits">🥦</div><span>Fruits & Veggies</span></div>
+                    <div class="category-card"><div class="category-icon bg-bakery">🍞</div><span>Bakery & Batters</span></div>
+                    <div class="category-card"><div class="category-icon bg-dairy">🥛</div><span>Dairy</span></div>
+                    <div class="category-card"><div class="category-icon bg-meat">🍗</div><span>Eggs & Meat</span></div>
+                </div>
+
+                <h3 style="font-size: 16px; margin: 24px 0 10px;">Grocery & Kitchen</h3>
+                <div class="category-grid">
+                    <div class="category-card"><div class="category-icon bg-atta">🌾</div><span>Atta, Rice & Dal</span></div>
+                    <div class="category-card"><div class="category-icon bg-oil">🛢️</div><span>Oil & Masala</span></div>
+                    <div class="category-card"><div class="category-icon bg-dryfruits">🥜</div><span>Dry Fruits</span></div>
+                    <div class="category-card"><div class="category-icon bg-kitchen">☕</div><span>Beverages</span></div>
+                </div>
+            </main>
         </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Slider Section -->
-        <section class="hero-slider-section">
-            <div class="hero-slider">
-                <!-- Slide 1 -->
-                <div class="hero-slide active">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKDYDcvhYeg2fsQltuNLEWQ8FG7r7-bEylSDHKro-f_Q&s" alt="A variety of fresh vegetables on a wooden surface">
-                </div>
-                <!-- Slide 2 -->
-                <div class="hero-slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGUPTXeneUKg7wBwhC5xkuKxHz9IUjZ8RYHl3r72Vdjg&s=10" alt="Fresh colorful fruits like strawberries, blueberries, and oranges">
-                </div>
-                <!-- Slide 3 -->
-                <div class="hero-slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLmZe3g4N7QTUyjXgaKElmCGvZmCoZGbiDaemziVD8yA&s=10" alt="Dairy products including milk, cheese, and yogurt">
-                </div>
-                <!-- Slide 4 -->
-                <div class="hero-slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHUGluVDTR8N22rdVPLjy0I1TIp-xQJuIR2aYvvJXJ9A&s=10" alt="A shopping basket filled with groceries in a supermarket aisle">
-                </div>
-                <!-- Slide 5 -->
-                <div class="hero-slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCMwEszXkAGkFPApn9Lo6tJ-5dopfJJg9lQBMB0Itnhg&s" alt="A close-up of fresh bread loaves on a shelf">
-                </div>
-            </div>
-            <!-- Slider Navigation -->
-            <button class="slider-nav prev" id="slider-prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
-            <button class="slider-nav next" id="slider-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
-            <!-- Slider Pagination -->
-            <div class="slider-pagination" id="slider-pagination">
-                <!-- Pagination dots will be inserted here by JS -->
-            </div>
-        </section>
+        <!-- PAGE 3: OFFERS PAGE -->
+        <div id="offersPage" class="page-view">
+            <main class="content-padding">
+                <h2 class="section-title">Mega Deals & Offers 🔥</h2>
 
-        <!-- Categories Section -->
-        <section class="categories-section">
-            <div class="container">
-                <h2>Shop by Category</h2>
-                <div class="scroll-wrapper">
-                    <div class="category-grid">
-                        <a href="product-listing.html" class="category-card">
-                            <img src="https://placehold.co/100x100/A3E635/333333?text=Veggies" alt="Fresh Vegetables">
-                            <h3>Vegetables</h3>
-                        </a>
-                        <a href="product-listing.html" class="category-card">
-                            <img src="https://placehold.co/100x100/FBBF24/333333?text=Fruits" alt="Fresh Fruits">
-                            <h3>Fruits</h3>
-                        </a>
-                        <a href="product-listing.html" class="category-card">
-                            <img src="https://placehold.co/100x100/60A5FA/333333?text=Dairy" alt="Dairy & Eggs">
-                            <h3>Dairy & Eggs</h3>
-                        </a>
-                        <a href="product-listing.html" class="category-card">
-                            <img src="https://placehold.co/100x100/F87171/333333?text=Meat" alt="Meat & Fish">
-                            <h3>Meat & Fish</h3>
-                        </a>
+                <div class="category-filters">
+                    <button class="filter-btn active-filter" onclick="filterDeals('all', this)">All Deals</button>
+                    <button class="filter-btn" onclick="filterDeals('fruits', this)">Fruits</button>
+                    <button class="filter-btn" onclick="filterDeals('veg', this)">Vegetables</button>
+                    <button class="filter-btn" onclick="filterDeals('dairy', this)">Dairy</button>
+                </div>
+
+                <div class="product-grid">
+                    <div class="product-card offer-item" data-cat="fruits">
+                        <span class="badge">20% OFF</span>
+                        <div class="product-img bg-bakery">🍊</div>
+                        <div class="product-name">Nagpur Oranges</div>
+                        <div class="product-price"><span class="price-old">₹100</span><span class="price-current">₹80</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card offer-item" data-cat="veg">
+                        <span class="badge">15% OFF</span>
+                        <div class="product-img bg-fruits">🥒</div>
+                        <div class="product-name">Fresh Cucumber</div>
+                        <div class="product-price"><span class="price-old">₹50</span><span class="price-current">₹42.50</span> / kg</div>
+                        <button class="btn-add">Add to Cart</button>
+                    </div>
+                    <div class="product-card offer-item" data-cat="dairy">
+                        <span class="badge">BUY 1 GET 1</span>
+                        <div class="product-img bg-dairy">🧈</div>
+                        <div class="product-name">Amul Butter</div>
+                        <div class="product-price"><span class="price-current">₹58</span> / 100g</div>
+                        <button class="btn-add">Add to Cart</button>
                     </div>
                 </div>
-            </div>
-        </section>
+            </main>
+        </div>
 
-        <!-- Featured Products Section -->
-        <section class="featured-products">
-            <div class="container">
-                <h2>Featured Products</h2>
-                <div class="scroll-wrapper">
-                    <div class="product-grid">
-                        <!-- Product Card 1 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/A3E635/FFFFFF?text=Broccoli" alt="Fresh Broccoli">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Fresh Broccoli</h3>
-                                    <p class="price">₹120 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+        <!-- PAGE 4: CART PAGE -->
+        <div id="cartPage" class="page-view">
+            <main class="content-padding">
+                <h2 class="section-title">Your Cart</h2>
+
+                <div class="cart-items-list">
+                    <div class="cart-item">
+                        <div class="item-icon bg-fruits">🥦</div>
+                        <div class="item-details">
+                            <div class="item-name">Fresh Broccoli</div>
+                            <div class="item-unit">₹120 / kg</div>
+                            <div class="item-price">₹120</div>
                         </div>
-                        <!-- Product Card 2 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/FBBF24/FFFFFF?text=Apples" alt="Shimla Apples">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Shimla Apples</h3>
-                                    <p class="price">₹180 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        <div class="qty-controls">
+                            <button class="qty-btn">-</button>
+                            <span style="font-size: 13px; font-weight:600;">1</span>
+                            <button class="qty-btn">+</button>
                         </div>
-                        <!-- Product Card 3 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/60A5FA/FFFFFF?text=Milk" alt="Toned Milk">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Toned Milk</h3>
-                                    <p class="price">₹65 / litre</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="item-icon bg-bakery">🍎</div>
+                        <div class="item-details">
+                            <div class="item-name">Shimla Apples</div>
+                            <div class="item-unit">₹180 / kg</div>
+                            <div class="item-price">₹360</div>
                         </div>
-                        <!-- Product Card 4 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Chicken" alt="Chicken Curry Cut">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Chicken Curry Cut</h3>
-                                    <p class="price">₹250 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+                        <div class="qty-controls">
+                            <button class="qty-btn">-</button>
+                            <span style="font-size: 13px; font-weight:600;">2</span>
+                            <button class="qty-btn">+</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Today's Offers Section -->
-        <section class="offers-section">
-            <div class="container">
-                <h2>Today's Offers</h2>
-                <div class="scroll-wrapper">
-                    <div class="product-grid">
-                        <!-- Offer Product 1 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <span class="product-badge sale-badge">20% OFF</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/FDBA74/FFFFFF?text=Oranges" alt="Nagpur Oranges">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Nagpur Oranges</h3>
-                                    <p class="price"><span class="original-price">₹100</span> ₹80 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
-                        <!-- Offer Product 2 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <span class="product-badge sale-badge">15% OFF</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/D1FAE5/FFFFFF?text=Cucumber" alt="Cucumber">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Fresh Cucumber</h3>
-                                    <p class="price"><span class="original-price">₹50</span> ₹42.50 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
+                <div class="bill-summary">
+                    <div style="font-weight:700; margin-bottom:10px;">Bill Details</div>
+                    <div class="bill-row"><span>Subtotal</span><span>₹480</span></div>
+                    <div class="bill-row"><span>Delivery Fee</span><span style="color:#27ae60; font-weight:600;">FREE</span></div>
+                    <div class="bill-row"><span>Taxes</span><span>₹15</span></div>
+                    <div class="bill-row total"><span>Grand Total</span><span>₹495</span></div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Top Brands Section -->
-        <section class="brands-section">
-            <div class="container">
-                <h2>Top Brands</h2>
-                <div class="scroll-wrapper">
-                    <div class="brands-grid">
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+A" alt="Brand A">
-                        </a>
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+B" alt="Brand B">
-                        </a>
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+C" alt="Brand C">
-                        </a>
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+D" alt="Brand D">
-                        </a>
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+E" alt="Brand E">
-                        </a>
-                        <a href="product-listing.html" class="brand-logo">
-                            <img src="https://placehold.co/150x80/CBD5E1/475569?text=Brand+F" alt="Brand F">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <button class="checkout-btn">Proceed to Pay (₹495) →</button>
+            </main>
+        </div>
 
-        <!-- Recently Viewed Section -->
-        <section class="featured-products">
-            <div class="container">
-                <h2>Recently Viewed</h2>
-                <div class="scroll-wrapper">
-                    <div class="product-grid">
-                        <!-- Recently Viewed Product 1 -->
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <button class="wishlist-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                                <img src="https://placehold.co/300x300/F87171/FFFFFF?text=Tomatoes" alt="Tomatoes">
-                            </div>
-                            <a href="product-details.html" class="product-link">
-                                <div class="product-info">
-                                    <h3>Vine Tomatoes</h3>
-                                    <p class="price">₹99 / kg</p>
-                                </div>
-                            </a>
-                            <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials-section">
-            <div class="container">
-                <h2>What Our Customers Say</h2>
-                <div class="scroll-wrapper">
-                    <div class="testimonial-grid">
-                        <!-- Testimonial 1 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <blockquote>"The produce is always so fresh! Delivery is super fast, and it has made my weekly grocery shopping a breeze."</blockquote>
-                            <div class="testimonial-author">
-                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=P" alt="Priya S.">
-                                <p>Priya S.<span>, Mumbai</span></p>
-                            </div>
-                        </div>
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <blockquote>"I love the wide range of organic products available. BazarBasket is my go-to for healthy and fresh groceries."</blockquote>
-                            <div class="testimonial-author">
-                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=R" alt="Rohan K.">
-                                <p>Rohan K.<span>, Delhi</span></p>
-                            </div>
-                        </div>
-                        <!-- Testimonial 3 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-stars">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <blockquote>"Excellent customer service and always on-time delivery. Highly recommended for anyone with a busy schedule!"</blockquote>
-                            <div class="testimonial-author">
-                                <img src="https://placehold.co/50x50/E2E8F0/475569?text=A" alt="Anjali M.">
-                                <p>Anjali M.<span>, Bangalore</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="container">
-                <div class="feature-card">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Within 60 minutes</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-leaf"></i>
-                    <h3>Always Fresh</h3>
-                    <p>Sourced from local farms</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-award"></i>
-                    <h3>Superior Quality</h3>
-                    <p>Quality guaranteed</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <h3>BazarBasket</h3>
-                    <p>Your one-stop shop for the freshest groceries, delivered with care right to your home.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="faq.html">FAQs</a></li>
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <div class="footer-brand">BazarBasket</div>
+            <p class="footer-desc">Your one-stop shop for the freshest groceries, delivered with care.</p>
+            <div class="footer-columns">
+                <div>
+                    <div style="font-weight:700; margin-bottom:8px;">Quick Links</div>
+                    <ul class="footer-links">
+                        <li><a onclick="switchPage('homePage', 'navHome')">Home</a></li>
+                        <li><a onclick="switchPage('categoryPage', 'navCategories')">Categories</a></li>
+                        <li><a onclick="switchPage('offersPage', 'navOffer')">Offers</a></li>
+                        <li><a onclick="switchPage('cartPage', 'navCart')">Cart</a></li>
                     </ul>
                 </div>
-                <div class="footer-social">
-                    <h4>Follow Us</h4>
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 BazarBasket. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
+            <div class="footer-bottom">© 2026 BazarBasket. All Rights Reserved.</div>
+        </footer>
 
-    <!-- Location Selection Modal -->
-    <div class="modal-overlay" id="location-selection-modal">
-        <div class="modal location-modal">
-            <button class="modal-close-btn" aria-label="Close location selector"><i class="fas fa-times"></i></button>
-            <h3>Select Your Delivery Location</h3>
+    </div>
 
-            <div class="location-modal-search">
-                <input type="text" id="location-search-input" placeholder="Search for an area, street, or landmark...">
-                <i class="fas fa-search"></i>
+    <!-- LOCATION SELECTOR MODAL POPUP -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="location-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Select Delivery Location</h3>
+                <button class="close-modal-btn" onclick="closeLocationModal()">✕</button>
             </div>
 
-            <div class="location-modal-results">
-                <!-- Search results will be populated here by JavaScript -->
-                <ul>
-                    <!-- Example: -->
-                    <!-- <li>Mumbai, Maharashtra, India</li> -->
-                </ul>
+            <div class="modal-search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="locSearchInput" placeholder="Search area, city or pincode (e.g. 823001)">
             </div>
 
-            <button class="btn btn-primary detect-location-btn" id="detect-current-location-btn">
-                <i class="fas fa-crosshairs"></i> Detect Current Location
+            <button class="detect-location-btn" onclick="detectGPSLocation()">
+                🎯 <span>Detect Current Location</span>
             </button>
 
-            <div class="location-map-embed" id="location-map-embed">
-                <!-- Google Map will be embedded here -->
+            <div class="map-section">
+                <div class="map-view-toggle">
+                    <span>Pinpoint on Map</span>
+                    <div class="view-btn-group">
+                        <button class="view-btn active" id="terrainBtn" onclick="switchMapView('terrain')">Terrain</button>
+                        <button class="view-btn" id="satelliteBtn" onclick="switchMapView('satellite')">Satellite</button>
+                    </div>
+                </div>
+
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
             </div>
+
+            <button class="confirm-loc-btn" onclick="confirmLocation()">Confirm Location</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- BACK TO TOP BUTTON -->
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 15l-6-6-6 6"></path>
+        </svg>
+    </button>
 
+    <!-- FLOATING BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav">
+        <a id="navHome" class="nav-item active" onclick="switchPage('homePage', 'navHome')">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </a>
+
+        <a id="navCategories" class="nav-item" onclick="switchPage('categoryPage', 'navCategories')">
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="2"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="2"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="2"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="2"></rect>
+            </svg>
+            <span>Categories</span>
+        </a>
+
+        <a id="navOffer" class="nav-item" onclick="switchPage('offersPage', 'navOffer')">
+            <svg viewBox="0 0 24 24">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span>Offer</span>
+        </a>
+
+        <a id="navCart" class="nav-item" onclick="switchPage('cartPage', 'navCart')">
+            <svg viewBox="0 0 24 24">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span>Cart</span>
+        </a>
+    </nav>
+
+    <!-- Leaflet JS Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        function switchPage(pageId, navId) {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active-page');
+            });
+
+            document.getElementById(pageId).classList.add('active-page');
+
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            document.getElementById(navId).classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleProfileMenu(e) {
+            e.stopPropagation();
+            document.getElementById('profileDropdown').classList.toggle('show');
+        }
+
+        window.addEventListener('click', () => {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        let map, marker;
+        let terrainLayer, satelliteLayer;
+        const defaultLat = 24.7955;
+        const defaultLng = 85.0002;
+
+        function openLocationModal() {
+            document.getElementById('locationModal').classList.add('active');
+            
+            if (!map) {
+                setTimeout(() => {
+                    map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+                    terrainLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap'
+                    });
+
+                    satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles © Esri'
+                    });
+
+                    terrainLayer.addTo(map);
+
+                    marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+
+                    marker.on('dragend', function(e) {
+                        const coords = e.target.getLatLng();
+                        reverseGeocodeCoords(coords.lat, coords.lng);
+                    });
+
+                    map.on('click', function(e) {
+                        marker.setLatLng(e.latlng);
+                        reverseGeocodeCoords(e.latlng.lat, e.latlng.lng);
+                    });
+                }, 200);
+            } else {
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 200);
+            }
+        }
+
+        function switchMapView(mode) {
+            if (!map) return;
+
+            const terrainBtn = document.getElementById('terrainBtn');
+            const satelliteBtn = document.getElementById('satelliteBtn');
+
+            if (mode === 'satellite') {
+                map.removeLayer(terrainLayer);
+                satelliteLayer.addTo(map);
+                satelliteBtn.classList.add('active');
+                terrainBtn.classList.remove('active');
+            } else {
+                map.removeLayer(satelliteLayer);
+                terrainLayer.addTo(map);
+                terrainBtn.classList.add('active');
+                satelliteBtn.classList.remove('active');
+            }
+        }
+
+        async function reverseGeocodeCoords(lat, lng) {
+            const locInput = document.getElementById('locSearchInput');
+            locInput.value = "Fetching address...";
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+                const data = await response.json();
+                
+                if (data && data.address) {
+                    const city = data.address.city || data.address.town || data.address.suburb || data.address.county || "Gaya";
+                    const state = data.address.state || "Bihar";
+                    const postcode = data.address.postcode || "";
+                    
+                    locInput.value = `${city}, ${state} ${postcode ? '- ' + postcode : ''}`;
+                } else {
+                    locInput.value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                }
+            } catch (err) {
+                locInput.value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            }
+        }
+
+        function closeLocationModal() {
+            document.getElementById('locationModal').classList.remove('active');
+        }
+
+        function detectGPSLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        if (map && marker) {
+                            map.invalidateSize();
+                            map.setView([lat, lng], 15);
+                            marker.setLatLng([lat, lng]);
+                            reverseGeocodeCoords(lat, lng);
+                        }
+                    },
+                    (error) => {
+                        alert("Geolocation access was denied or failed. Please check browser location permissions.");
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+
+        function confirmLocation() {
+            const searchVal = document.getElementById('locSearchInput').value;
+            if (searchVal.trim() !== "") {
+                document.getElementById('currentLocText').innerText = searchVal;
+            } else {
+                document.getElementById('currentLocText').innerText = "Gaya, Bihar - 823001";
+            }
+            closeLocationModal();
+        }
+
+        let currentSlide = 0;
+        const totalSlides = 5;
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            document.getElementById('sliderWrapper').style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            document.getElementById('sliderWrapper').style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        setInterval(() => { moveSlide(1); }, 4000);
+
+        function filterDeals(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+            btn.classList.add('active-filter');
+
+            document.querySelectorAll('.offer-item').forEach(item => {
+                if (cat === 'all' || item.getAttribute('data-cat') === cat) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) backToTopBtn.classList.add('visible');
+            else backToTopBtn.classList.remove('visible');
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
