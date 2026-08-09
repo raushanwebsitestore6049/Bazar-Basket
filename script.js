@@ -95,22 +95,22 @@ function switchMapView(mode) {
 
 async function reverseGeocodeCoords(lat, lng) {
     const locInput = document.getElementById('locSearchInput');
-    locInput.value = "Fetching address...";
+    locInput.value = "Fetching address, please wait...";
 
     try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+        // Adding addressdetails=1 to get more granular data
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`);
         const data = await response.json();
         
-        if (data && data.address) {
-            const city = data.address.city || data.address.town || data.address.suburb || data.address.county || "Gaya";
-            const state = data.address.state || "Bihar";
-            const postcode = data.address.postcode || "";
-            
-            locInput.value = `${city}, ${state} ${postcode ? '- ' + postcode : ''}`;
+        if (data && data.display_name) {
+            // The display_name often provides a well-formatted, detailed address.
+            locInput.value = data.display_name;
         } else {
+            // Fallback if display_name is not available
             locInput.value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
         }
     } catch (err) {
+        console.error("Error fetching address:", err);
         locInput.value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
     }
 }
