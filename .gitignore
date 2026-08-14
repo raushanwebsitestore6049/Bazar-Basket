@@ -1,0 +1,5 @@
+# Firebase configuration file
+firebase-config.js
+
+# Environment variables file (if you use it in the future)
+.env

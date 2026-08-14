@@ -1,6 +1,7 @@
 let cart = [];
+let currentUser = null; // Variable to store logged-in user data
 
-function switchPage(pageId, navId) {
+function switchPage(pageId, navId = null) {
     document.querySelectorAll('.page-view').forEach(page => {
         page.classList.remove('active-page');
     });
@@ -11,27 +12,21 @@ function switchPage(pageId, navId) {
     document.querySelectorAll('.nav-item').forEach(nav => {
         nav.classList.remove('active');
     });
-    document.getElementById(navId).classList.add('active');
+    if (navId) {
+        document.getElementById(navId).classList.add('active');
+    }
 
     // If switching to cart page, render the cart
     if (pageId === 'cartPage') {
         renderCart();
     }
+    // If switching to account page, populate user data
+    if (pageId === 'myAccountPage') {
+        populateAccountPage();
+    }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-function toggleProfileMenu(e) {
-    e.stopPropagation();
-    document.getElementById('profileDropdown').classList.toggle('show');
-}
-
-window.addEventListener('click', () => {
-    const dropdown = document.getElementById('profileDropdown');
-    if (dropdown && dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-    }
-});
 
 let map, marker;
 let terrainLayer, satelliteLayer;
@@ -134,12 +129,12 @@ function detectGPSLocation() {
                 }
             },
             (error) => {
-                alert("Geolocation access was denied or failed. Please check browser location permissions.");
+                console.error("Geolocation access was denied or failed. Please check browser location permissions.");
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
     } else {
-        alert("Geolocation is not supported by your browser.");
+        console.error("Geolocation is not supported by your browser.");
     }
 }
 
@@ -261,7 +256,7 @@ function showEmptyState() {
 }
 
 function applyPromo() {
-    alert('Promo code applied successfully!');
+    console.log('Promo code applied successfully!');
 }
 
 /* ==========================================
@@ -340,7 +335,7 @@ function openQuickView(product) {
         addToCart({ ...product, qty });
         closeQuickView();
         // Add a visual confirmation on the main page if desired
-        alert(`${qty} x ${product.name} added to cart!`);
+        console.log(`${qty} x ${product.name} added to cart!`);
     };
 
     document.getElementById('quickViewModal').classList.add('active');
@@ -368,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // would also need data attributes and this handler would be more generic.
         homeProductGrid.addEventListener('click', (e) => {
             if (e.target.classList.contains('btn-add')) {
-                alert('Item added to cart! (Home page functionality is illustrative)');
+                console.log('Item added to cart! (Home page functionality is illustrative)');
             }
         });
     }
@@ -380,6 +375,396 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function populateAccountPage() {
+    if (!currentUser) {
+        // If no user is logged in, redirect to login page
+        switchPage('loginPage');
+        return;
+    }
+
+    const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
+    const initials = `${currentUser.firstName.charAt(0)}${currentUser.lastName.charAt(0)}`.toUpperCase();
+
+    document.getElementById('account-name').textContent = fullName;
+    document.getElementById('account-avatar').textContent = initials;
+    document.getElementById('account-phone').textContent = currentUser.phone;
+    document.getElementById('account-email').textContent = currentUser.email;
+}
+
+
 // We need to ensure the event listener is attached when the offers page is loaded.
 // The best place is after the content is fetched and inserted.
 // Let's modify the script in index.html for this.
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- LOGIN FORM LOGIC ---
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        const phoneInput = document.getElementById('loginPhoneNumber');
+        const phoneError = document.getElementById('loginPhoneError');
+        const passwordInput = document.getElementById('loginPassword');
+        const passwordError = document.getElementById('loginPasswordError');
+        const togglePassword = document.getElementById('toggleLoginPassword');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        function validateLoginPhone() {
+            const rawVal = phoneInput.value.trim();
+            const cleanVal = rawVal.replace(/[\s\-+()]/g, '');
+            const phonePattern = /^[0-9]{7,15}$/;
+
+            if (rawVal === '') {
+                phoneInput.classList.remove('valid', 'invalid');
+                phoneError.classList.remove('show');
+                return false;
+            }
+
+            const isValid = phonePattern.test(cleanVal);
+            if (isValid) {
+                phoneInput.classList.remove('invalid');
+                phoneInput.classList.add('valid');
+                phoneError.classList.remove('show');
+            } else {
+                phoneInput.classList.remove('valid');
+                phoneInput.classList.add('invalid');
+                phoneError.classList.add('show');
+            }
+            return isValid;
+        }
+
+        function validateLoginPassword() {
+            if (passwordInput.value.length > 0) {
+                passwordInput.classList.remove('invalid');
+                passwordError.classList.remove('show');
+                return true;
+            }
+            return false;
+        }
+
+        phoneInput.addEventListener('input', validateLoginPhone);
+        passwordInput.addEventListener('input', validateLoginPassword);
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleLogin();
+        });
+    }
+
+    async function handleLogin() {
+        const phoneInput = document.getElementById('loginPhoneNumber');
+        const passwordInput = document.getElementById('loginPassword');
+        const phoneError = document.getElementById('loginPhoneError');
+        const passwordError = document.getElementById('loginPasswordError');
+
+        const isPhoneFormatValid = validateLoginPhone();
+        const isPasswordEntered = validateLoginPassword();
+
+        if (!isPhoneFormatValid || !isPasswordEntered) {
+            if (!isPasswordEntered) {
+                passwordInput.classList.add('invalid');
+                passwordError.classList.add('show');
+            }
+            return;
+        }
+
+        const db = firebase.database();
+        // Assuming +91 is the primary country code for your users
+        const fullPhoneNumber = "+91" + phoneInput.value.trim();
+        const enteredPassword = passwordInput.value;
+
+        try {
+            const snapshot = await db.ref('Customers Details/' + fullPhoneNumber).once('value');
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                if (userData.password === enteredPassword) {
+                    // Login successful
+                    currentUser = {
+                        phone: fullPhoneNumber,
+                        ...userData
+                    };
+                    localStorage.setItem('bazarBasketUser', JSON.stringify(currentUser)); // Store user in localStorage for persistence
+                    updateLoginState(true);
+                    console.log(`Welcome back, ${userData.firstName}!`);
+                    switchPage('homePage', 'navHome');
+                } else {
+                    // Incorrect password
+                    passwordInput.classList.add('invalid');
+                    passwordError.textContent = 'Incorrect password. Please try again.';
+                    passwordError.classList.add('show');
+                }
+            } else {
+                // User not found
+                phoneInput.classList.add('invalid');
+                phoneError.textContent = 'This mobile number is not registered.';
+                phoneError.classList.add('show');
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            // Optionally, show an inline error message here
+        }
+    }
+
+    function updateLoginState(isLoggedIn) {
+        const loggedOutView = document.getElementById('profile-logged-out');
+        const loggedInView = document.getElementById('profile-logged-in');
+
+        if (isLoggedIn) {
+            loggedOutView.style.display = 'none';
+            loggedInView.style.display = 'block';
+        } else {
+            loggedOutView.style.display = 'block';
+            loggedInView.style.display = 'none';
+        }
+    }
+
+    // --- SIGNUP FORM LOGIC ---
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const countryCodeSelect = document.getElementById('countryCode');
+
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        const phoneInput = document.getElementById('signupPhoneNumber');
+        const phoneError = document.getElementById('signupPhoneError');
+        const passwordInput = document.getElementById('signupPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const matchError = document.getElementById('matchError');
+        const matchSuccess = document.getElementById('matchSuccess');
+        const toggleSignupPassword = document.getElementById('toggleSignupPassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+        const rules = {
+            length: { el: document.getElementById('rule-length'), test: (val) => val.length >= 8 },
+            upper: { el: document.getElementById('rule-upper'), test: (val) => /[A-Z]/.test(val) },
+            lower: { el: document.getElementById('rule-lower'), test: (val) => /[a-z]/.test(val) },
+            number: { el: document.getElementById('rule-number'), test: (val) => /[0-9]/.test(val) },
+            special: { el: document.getElementById('rule-special'), test: (val) => /[@$!%*?&#]/.test(val) }
+        };
+
+        function validateEmail() {
+            const emailVal = emailInput.value.trim();
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (emailVal === "") { emailInput.classList.remove('valid', 'invalid'); emailError.classList.remove('show'); return false; }
+            const isValid = emailPattern.test(emailVal);
+            emailInput.classList.toggle('valid', isValid);
+            emailInput.classList.toggle('invalid', !isValid);
+            emailError.classList.toggle('show', !isValid);
+            return isValid;
+        }
+
+        function validatePhone() {
+            const phoneVal = phoneInput.value.trim();
+            const phonePattern = /^[0-9]{7,15}$/;
+            if (phoneVal === "") { phoneInput.classList.remove('valid', 'invalid'); phoneError.classList.remove('show'); return false; }
+            const isValid = phonePattern.test(phoneVal.replace(/\s+/g, ''));
+            phoneInput.classList.toggle('valid', isValid);
+            phoneInput.classList.toggle('invalid', !isValid);
+            phoneError.classList.toggle('show', !isValid);
+            return isValid;
+        }
+
+        function validatePassword() {
+            const val = passwordInput.value;
+            let allValid = true;
+            for (const key in rules) {
+                const passed = rules[key].test(val);
+                rules[key].el.classList.toggle('valid', passed);
+                if (!passed) allValid = false;
+            }
+            if (val.length === 0) { passwordInput.classList.remove('valid', 'invalid'); }
+            else { passwordInput.classList.toggle('valid', allValid); passwordInput.classList.toggle('invalid', !allValid); }
+            // Re-validate confirm password whenever the main password changes
+            if (confirmPasswordInput.value.length > 0) validatePasswordMatch();
+            return allValid;
+        }
+
+        function validatePasswordMatch() {
+            const pwd = passwordInput.value;
+            const confirmPwd = confirmPasswordInput.value;
+            if (confirmPwd.length === 0) {
+                confirmPasswordInput.classList.remove('valid', 'invalid');
+                matchError.classList.remove('show');
+                matchSuccess.classList.remove('show');
+                return false;
+            }
+            const isMatch = pwd === confirmPwd && pwd !== '';
+            confirmPasswordInput.classList.toggle('valid', isMatch);
+            confirmPasswordInput.classList.toggle('invalid', !isMatch);
+            matchError.classList.toggle('show', !isMatch);
+            matchSuccess.classList.toggle('show', isMatch);
+            return isMatch;
+        }
+
+        async function checkMobileExists() {
+            const isFormatValid = validatePhone();
+            if (!isFormatValid) return; // Don't check if format is wrong
+
+            const db = firebase.database();
+            const fullPhoneNumber = countryCodeSelect.value + phoneInput.value.trim();
+            
+            // Reset DB-specific error before checking
+            if (phoneError.textContent === 'This mobile number is already registered.') {
+                phoneError.textContent = 'Please enter a valid mobile number (7–15 digits).'; // Reset to default format error
+                phoneInput.classList.remove('invalid');
+                phoneError.classList.remove('show');
+                validatePhone(); // Re-run format validation to get correct state
+            }
+
+            try {
+                const snapshot = await db.ref('Customers Details/' + fullPhoneNumber).once('value');
+                if (snapshot.exists()) {
+                    phoneError.textContent = 'This mobile number is already registered.';
+                    phoneInput.classList.add('invalid');
+                    phoneError.classList.add('show');
+                }
+            } catch (error) {
+                console.error("Error checking mobile number:", error);
+            }
+        }
+
+        async function checkEmailExists() {
+            const isFormatValid = validateEmail();
+            if (!isFormatValid) return; // Don't check if format is wrong
+
+            const db = firebase.database();
+            const emailVal = emailInput.value.trim();
+
+            // Reset DB-specific error before checking
+            if (emailError.textContent === 'This email address is already in use.') {
+                emailError.textContent = 'Please enter a valid email format (e.g. user@domain.com).';
+                emailInput.classList.remove('invalid');
+                emailError.classList.remove('show');
+                validateEmail(); // Re-run format validation
+            }
+
+            const snapshot = await db.ref('Customers Details').orderByChild('email').equalTo(emailVal).once('value');
+            if (snapshot.exists()) {
+                emailError.textContent = 'This email address is already in use.';
+                emailInput.classList.add('invalid');
+                emailError.classList.add('show');
+            }
+        }
+
+        emailInput.addEventListener('input', validateEmail);
+        phoneInput.addEventListener('input', validatePhone);
+        passwordInput.addEventListener('input', validatePassword);
+        confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+
+        // Add blur listeners for real-time DB checks
+        phoneInput.addEventListener('blur', checkMobileExists);
+        emailInput.addEventListener('blur', checkEmailExists);
+
+        // Add listeners for password toggles
+        toggleSignupPassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            toggleSignupPassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        toggleConfirmPassword.addEventListener('click', () => {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            toggleConfirmPassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Re-run checks on submit to be absolutely sure
+            checkMobileExists();
+            checkEmailExists();
+
+            // Manually validate all fields on submit to catch empty required fields
+            const isEmailValid = validateEmail();
+            const isPhoneValid = validatePhone();
+            const isPasswordValid = validatePassword();
+            const isMatchValid = validatePasswordMatch();
+            const isFirstNameValid = firstNameInput.value.trim() !== '';
+            const isLastNameValid = lastNameInput.value.trim() !== '';
+
+            // Add UI feedback for empty first/last name if they are invalid
+            firstNameInput.classList.toggle('invalid', !isFirstNameValid);
+            lastNameInput.classList.toggle('invalid', !isLastNameValid);
+
+            // Final check to ensure no error messages are showing
+            const isMobileAvailable = !phoneError.classList.contains('show');
+            const isEmailAvailable = !emailError.classList.contains('show');
+
+
+            if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && isPasswordValid && isMatchValid && isMobileAvailable && isEmailAvailable) {
+                // --- Firebase Integration ---
+                const db = firebase.database();
+                const fullPhoneNumber = countryCodeSelect.value + phoneInput.value.trim();
+
+                const customerData = {
+                    firstName: firstNameInput.value.trim(),
+                    lastName: lastNameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    // WARNING: Storing passwords in plaintext is a major security risk.
+                    password: passwordInput.value
+                };
+
+                // Use the mobile number as the key under "Customers Details"
+                db.ref('Customers Details/' + fullPhoneNumber).set(customerData)
+                    .then(() => {
+                        console.log('Account created successfully and data saved!');
+                        
+                        // Reset form and UI on success
+                        signupForm.reset();
+                        document.querySelectorAll('.input-field').forEach(input => input.classList.remove('valid', 'invalid'));
+                        document.querySelectorAll('.check-item').forEach(item => item.classList.remove('valid'));
+                        matchSuccess.classList.remove('show');
+                        
+                        // Navigate to home page
+                        switchPage('homePage', 'navHome');
+                    })
+                    .catch((error) => {
+                        console.error("Error saving data to Firebase: ", error);
+                        // Optionally, show an inline error message here
+                    });
+            } else {
+                console.log('Please fill out all required fields correctly.');
+            }
+        });
+    }
+
+    function handleLogout() {
+        document.getElementById('logoutConfirmModal').classList.add('active');
+    }
+
+    // Add logout listener
+    const logoutButton = document.getElementById('logoutButton');
+    const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+    if (cancelLogoutBtn) {
+        cancelLogoutBtn.addEventListener('click', () => {
+            document.getElementById('logoutConfirmModal').classList.remove('active');
+        });
+    }
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            localStorage.removeItem('bazarBasketUser');
+            updateLoginState(false);
+            document.getElementById('logoutConfirmModal').classList.remove('active');
+            switchPage('homePage', 'navHome');
+        });
+    }
+
+    // Check for a logged-in user on page load
+    const storedUser = localStorage.getItem('bazarBasketUser');
+    if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+        updateLoginState(true);
+    }
+});

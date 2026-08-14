@@ -58,14 +58,17 @@
                     <a href="#" class="nav-link desktop-nav-link" onclick="switchPage('offersPage', 'navOffer')"><i class="fa-solid fa-tag"></i> Offers</a>
                     <a href="#" class="nav-link desktop-nav-link"><i class="fa-solid fa-truck"></i> Track Order</a>
                     
-                    <div class="profile-wrapper">
-                        <a href="#" class="nav-link badge-icon" onclick="toggleProfileMenu(event)">
+                    <!-- Logged-out state -->
+                    <div id="profile-logged-out" class="profile-wrapper">
+                        <a href="#" class="nav-link badge-icon" onclick="switchPage('loginPage')" title="Login / Sign Up">
                             <i class="fa-regular fa-user"></i>
                         </a>
-                        <div class="profile-dropdown" id="profileDropdown">
-                            <button class="dropdown-btn btn-login" onclick="alert('Login Clicked')">Log In</button>
-                            <button class="dropdown-btn btn-signup" onclick="alert('Sign Up Clicked')">Sign Up</button>
-                        </div>
+                    </div>
+                    <!-- Logged-in state (initially hidden) -->
+                    <div id="profile-logged-in" class="profile-wrapper" style="display: none;">
+                        <a href="#" class="nav-link badge-icon" onclick="switchPage('myAccountPage')" title="My Account">
+                            <i class="fa-solid fa-user-check" style="color: var(--primary-green);"></i>
+                        </a>
                     </div>
                     
                     <a href="#" class="nav-link badge-icon">
@@ -646,14 +649,11 @@
             </div>
         </div>
 
-        <!-- PAGE 4: CART PAGE -->
-        <div id="cartPage" class="page-view">
+        <!-- PAGE: CART PAGE -->
+        <div id="cartPage" class="page-view cart-page-container">
             <!-- Header -->
             <header class="cart-header">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h1 class="cart-title">Your Cart</h1>
-                    <span class="item-count-badge" id="cartBadge">3 Items</span>
-                </div>
+                <h1 class="cart-title">Your Cart (<span id="cartBadge">3 Items</span>)</h1>
                 <button class="clear-btn" onclick="clearCart()">Clear All</button>
             </header>
 
@@ -766,6 +766,365 @@
             </main>
         </div>
 
+        <!-- PAGE: LOGIN PAGE -->
+        <div id="loginPage" class="page-view auth-page-view">
+            <div class="auth-content-wrapper">
+                <main class="auth-card">
+                    <header class="auth-header">
+                        <h1>Welcome Back</h1>
+                        <p>Sign in using your mobile number</p>
+                    </header>
+        
+                    <form action="#" method="POST" id="loginForm" class="auth-form" novalidate>
+                        <div class="form-group">
+                            <label for="loginPhoneNumber">Mobile Number</label>
+                            <div class="input-wrapper">
+                                <input type="tel" id="loginPhoneNumber" name="phoneNumber" class="input-field" placeholder="Enter your mobile number" required autocomplete="tel">
+                            </div>
+                            <span class="error-msg" id="loginPhoneError">Please enter a valid mobile number (7–15 digits).</span>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="loginPassword" name="password" class="input-field" placeholder="••••••••" required autocomplete="current-password">
+                                <button type="button" class="toggle-password" id="toggleLoginPassword">Show</button>
+                            </div>
+                            <span class="error-msg" id="loginPasswordError">Password cannot be empty.</span>
+                        </div>
+        
+                        <div class="form-actions">
+                            <label class="remember-me">
+                                <input type="checkbox" name="remember" id="remember">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+        
+                        <button type="submit" class="btn-submit">Sign In</button>
+                    </form>
+        
+                    <footer class="auth-prompt">
+                        Don't have an account? <a href="#" onclick="switchPage('signupPage')">Sign up</a>
+                    </footer>
+                </main>
+            </div>
+        </div>
+
+        <!-- PAGE: SIGNUP PAGE -->
+        <div id="signupPage" class="page-view auth-page-view">
+            <div class="auth-content-wrapper">
+                <main class="auth-card signup-card">
+                    <header class="auth-header">
+                        <h1>Create Account</h1>
+                        <p>Fill in your details with a secure password</p>
+                    </header>
+        
+                    <form action="#" method="POST" id="signupForm" class="auth-form" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="input-field" placeholder="John" required autocomplete="given-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="input-field" placeholder="Doe" required autocomplete="family-name">
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="signupPhoneNumber">Mobile Number</label>
+                            <div class="phone-input-group">
+                                <select id="countryCode" name="countryCode" class="country-code-select">
+                                    <option value="+91" selected>🇮🇳 +91 (IN)</option>
+                                    <option value="+1">🇺🇸 +1 (US)</option>
+                                    <option value="+44">🇬🇧 +44 (UK)</option>
+                                </select>
+                                <input type="tel" id="signupPhoneNumber" name="phoneNumber" class="input-field" placeholder="98765 43210" required autocomplete="tel-national">
+                            </div>
+                            <span class="error-msg" id="signupPhoneError">Please enter a valid mobile number.</span>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="input-field" placeholder="name@example.com" required autocomplete="email">
+                            <span class="error-msg" id="emailError">Please enter a valid email format (e.g. user@domain.com).</span>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="signupPassword" name="password" class="input-field" placeholder="Create a strong password" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" id="toggleSignupPassword">Show</button>
+                            </div>
+                            <div class="password-checklist" id="pwdChecklist">
+                                <div class="check-item" id="rule-length">8+ characters</div>
+                                <div class="check-item" id="rule-upper">1 Uppercase (A-Z)</div>
+                                <div class="check-item" id="rule-lower">1 Lowercase (a-z)</div>
+                                <div class="check-item" id="rule-number">1 Number (0-9)</div>
+                                <div class="check-item" id="rule-special" style="grid-column: span 2;">1 Special symbol (@$!%*?&#)</div>
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="input-field" placeholder="Repeat your password" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" id="toggleConfirmPassword">Show</button>
+                            </div>
+                            <span class="error-msg" id="matchError">Passwords do not match.</span>
+                            <span class="success-msg" id="matchSuccess">Passwords match!</span>
+                        </div>
+        
+                        <button type="submit" id="submitBtn" class="btn-submit">Sign Up</button>
+                    </form>
+        
+                    <footer class="auth-prompt">
+                        Already have an account? <a href="#" onclick="switchPage('loginPage')">Sign in</a>
+                    </footer>
+                </main>
+            </div>
+        </div>
+
+        <!-- PAGE: MY ACCOUNT PAGE -->
+        <div id="myAccountPage" class="page-view">
+            <div class="viewport-container">
+    
+                
+            
+                <!-- Master Layout -->
+                <main class="account-layout-new">
+                  
+                  <!-- LEFT COLUMN (Desktop) / TOP (Mobile) -->
+                  <div class="column-stack">
+                    
+                    <!-- 1. Profile Card -->
+                    <section class="profile-card">
+                      <div class="profile-top">
+                        <div class="profile-user-left">
+                          <div class="profile-avatar" id="account-avatar">RK</div>
+                          <div class="profile-details">
+                            <h2 id="account-name">User Name</h2>
+                            <span class="member-tag">Bazar Star Member</span>
+                          </div>
+                        </div>
+                        <button class="btn-edit-pill" onclick="alert('Edit profile triggered')" title="Edit Profile">
+                          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                      </div>
+            
+                      <div class="profile-meta-list">
+                        <div class="profile-meta-item">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+                          <span id="account-phone">Mobile Number</span>
+                        </div>
+                        <div class="profile-meta-item">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><rect width="20" height="14" x="2" y="5" rx="2"/></svg>
+                          <span id="account-email">email@example.com</span>
+                        </div>
+                      </div>
+                    </section>
+            
+                    <!-- 2. Quick Access Tiles (Orders, Wallet, Address) -->
+                    <section class="quick-actions-grid">
+                      <a href="#" class="quick-action-tile">
+                        <div class="tile-icon-circle">
+                          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+                        </div>
+                        <span class="tile-title">Orders</span>
+                      </a>
+            
+                      <a href="#" class="quick-action-tile">
+                        <div class="tile-icon-circle">
+                          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+                        </div>
+                        <span class="tile-title">BBWallet</span>
+                      </a>
+            
+                      <a href="#" class="quick-action-tile">
+                        <div class="tile-icon-circle">
+                          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><circle cx="12" cy="10" r="3"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+                        </div>
+                        <span class="tile-title">Address</span>
+                      </a>
+                    </section>
+            
+                  </div>
+            
+                  <!-- RIGHT COLUMN (Desktop) / CONTINUATION (Mobile) -->
+                  <div class="column-stack">
+                    
+                    <!-- 3. Primary Services List (Ends with Notifications) -->
+                    <section class="services-group">
+                      
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                          </div>
+                          <span class="service-label">My Wishlist</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="m9 14 2 2 4-4"/></svg>
+                          </div>
+                          <span class="service-label">Shopping lists</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                          </div>
+                          <span class="service-label">Saved Payments</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                          </div>
+                          <span class="service-label">Ratings & Reviews</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="#4f46e5" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                          </div>
+                          <div style="display:flex; align-items:center;">
+                            <span class="service-label">NeuCard</span>
+                            <span class="neu-badge">TATA</span>
+                          </div>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+                          </div>
+                          <span class="service-label">Support & FAQs</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="18" height="14" x="3" y="8" rx="2"/><path d="M12 5a3 3 0 1 0-3 3h6a3 3 0 1 0-3-3Z"/><path d="M12 8v14"/></svg>
+                          </div>
+                          <span class="service-label">My Gift Cards</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                      <a href="#" class="service-row">
+                        <div class="service-left">
+                          <div class="service-icon-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                          </div>
+                          <span class="service-label">Notifications</span>
+                        </div>
+                        <svg class="chevron-right" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </a>
+            
+                    </section>
+            
+                    <!-- 4. "DO MORE WITH BAZARBASKET" -->
+                    <section class="promo-section">
+                      <div class="promo-header">
+                        <h3>Do more with BazarBasket</h3>
+                        <p>Wellness blogs, health tips, donations, and more</p>
+                      </div>
+            
+                      <div class="promo-grid-new">
+                        <a href="#" class="promo-card-new">
+                          <div class="promo-thumb-box">
+                            <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=160&auto=format&fit=crop&q=60" alt="bbWellness">
+                          </div>
+                          <span class="promo-name">bbWellness</span>
+                        </a>
+            
+                        <a href="#" class="promo-card-new">
+                          <div class="promo-thumb-box">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=160&auto=format&fit=crop&q=60" alt="bbLifestyle">
+                          </div>
+                          <span class="promo-name">bbLifestyle</span>
+                        </a>
+            
+                        <a href="#" class="promo-card-new">
+                          <div class="promo-thumb-box">
+                            <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb9?w=160&auto=format&fit=crop&q=60" alt="Donation">
+                          </div>
+                          <span class="promo-name">Donation</span>
+                        </a>
+            
+                        <a href="#" class="promo-card-new">
+                          <div class="promo-thumb-box">
+                            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=160&auto=format&fit=crop&q=60" alt="Offers">
+                          </div>
+                          <span class="promo-name">Offers</span>
+                        </a>
+                      </div>
+                    </section>
+            
+                    <!-- 5. Legal Links Section (FAQs, Terms, Privacy) -->
+                    <section class="legal-links-box">
+                      <a href="#" class="legal-link-row">FAQs</a>
+                      <a href="#" class="legal-link-row">Terms & Conditions</a>
+                      <a href="#" class="legal-link-row">Privacy Policy</a>
+                    </section>
+            
+                    <!-- 6. Log Out Button -->
+                    <button class="btn-logout" id="logoutButton">
+                      <span>Log Out</span>
+                      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </button>
+            
+                    <!-- 7. Social Handles -->
+                    <div class="social-strip">
+                      <a href="#" class="social-btn insta" title="Instagram">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                      </a>
+                      <a href="#" class="social-btn x" title="X (Twitter)">
+                        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      </a>
+                      <a href="#" class="social-btn fb" title="Facebook">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                      </a>
+                      <a href="#" class="social-btn yt" title="YouTube">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                      </a>
+                    </div>
+            
+                    <!-- 8. Branding Footer -->
+                    <footer class="branding-footer">
+                      <div class="bb-logo-text">
+                        <span>bb</span>bazarbasket
+                      </div>
+                      <div class="tata-enterprise">A TATA Enterprise</div>
+                      <span class="version-tag">v8.36.1 (25115010)</span>
+                    </footer>
+            
+                  </div>
+            
+                </main>
+            
+            </div>
+        </div>
+
         <!-- FOOTER -->
         <footer class="site-footer">
             <div class="footer-brand">BazarBasket</div>
@@ -847,6 +1206,18 @@
         </div>
     </div>
 
+    <!-- LOGOUT CONFIRMATION MODAL -->
+    <div class="modal-overlay" id="logoutConfirmModal">
+        <div class="location-modal" style="max-width: 380px; text-align: center; gap: 20px;">
+            <h3 class="modal-title">Confirm Logout</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Are you sure you want to log out from your BazarBasket account?</p>
+            <div style="display: flex; gap: 12px; width: 100%;">
+                <button class="confirm-loc-btn" style="flex: 1; background-color: var(--text-secondary);" id="cancelLogoutBtn">Cancel</button>
+                <button class="confirm-loc-btn" style="flex: 1; background-color: #e53935;" id="confirmLogoutBtn">Log Out</button>
+            </div>
+        </div>
+    </div>
+
     <!-- BACK TO TOP BUTTON -->
     <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -895,6 +1266,17 @@
     <!-- Leaflet JS Library -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <!-- Firebase SDKs (using compat libraries for easier syntax) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-database-compat.js"></script>
+
+    <!-- Your Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+    <script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
     <script src="script.js"></script>
     <!-- 
         The script for loading page content via fetch() has been removed.
@@ -904,4 +1286,5 @@
         listeners are now attached in script.js on DOMContentLoaded.
     -->
 </body>
+
 </html>

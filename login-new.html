@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mobile Login</title>
+  <style>
+    /* Theme Palette: Deep Blue, Emerald Green, and Crisp White */
+    :root { 
+      /* Light Theme (Default) */
+      --bg-deep-blue: #f4f6f8;
+      --bg-gradient: #f4f6f8;
+      --accent-green: #0d7a42;
+      --accent-green-hover: #09582f;
+      --accent-green-glow: rgba(13, 122, 66, 0.15);
+      
+      --card-bg: #ffffff;
+      --card-border: #e5e8eb;
+      
+      --text-white: #1c252e;
+      --text-muted: #637381;
+      
+      --input-bg: #f8f9fa;
+      --input-border: #e5e8eb;
+
+      --danger-color: #d32f2f;
+      --success-color: #0d7a42;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+      /* Dark Theme */
+      --bg-deep-blue: #0b132b;
+      --bg-gradient: radial-gradient(circle at top right, #1c2541, #0b132b 85%);
+      --accent-green: #10b981;
+      --accent-green-hover: #059669;
+      --accent-green-glow: rgba(16, 185, 129, 0.25);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --input-bg: rgba(255, 255, 255, 0.08);
+      --input-border: rgba(255, 255, 255, 0.18);
+      --danger-color: #f43f5e;
+      --success-color: #10b981;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg-gradient);
+      color: var(--text-white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Glassmorphism Card */
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      /* backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); */
+      border: 1px solid var(--card-border);
+      border-radius: clamp(16px, 4vw, 24px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      padding: clamp(24px, 5vw, 40px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .login-header h1 {
+      font-size: clamp(1.5rem, 4vw, 1.9rem);
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .login-header p {
+      color: var(--text-muted);
+      font-size: clamp(0.82rem, 2vw, 0.92rem);
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-white);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent-green);
+      background-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px var(--accent-green-glow);
+    }
+
+    .input-field.invalid {
+      border-color: var(--danger-color);
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+    }
+
+    .input-field.valid {
+      border-color: var(--success-color);
+    }
+
+    /* Password Toggle Button */
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 4px;
+      user-select: none;
+    }
+
+    .toggle-password:hover {
+      color: var(--text-white);
+    }
+
+    /* Inline Validation Feedback */
+    .error-msg {
+      font-size: 0.75rem;
+      color: var(--danger-color);
+      display: none;
+      margin-top: 2px;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    /* Form Actions: Remember me & Forgot Password */
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .remember-me input[type="checkbox"] {
+      accent-color: var(--accent-green);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      color: var(--accent-green);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .forgot-password:hover {
+      color: var(--accent-green-hover);
+      text-decoration: underline;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--accent-green);
+      color: var(--text-white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 14px var(--accent-green-glow);
+      transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--accent-green-hover);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer Prompt */
+    .signup-prompt {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .signup-prompt a {
+      color: var(--accent-green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .signup-prompt a:hover {
+      text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .login-card {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <main class="login-card">
+      <header class="login-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in using your mobile number</p>
+      </header>
+
+      <form action="#" method="POST" id="loginForm" class="login-form" novalidate>
+        
+        <!-- Direct Mobile Number Input (No Country Code Dropdown) -->
+        <div class="form-group">
+          <label for="phoneNumber">Mobile Number</label>
+          <div class="input-wrapper">
+            <input 
+              type="tel" 
+              id="phoneNumber" 
+              name="phoneNumber" 
+              class="input-field" 
+              placeholder="Enter your mobile number" 
+              required 
+              autocomplete="tel"
+            >
+          </div>
+          <span class="error-msg" id="phoneError">Please enter a valid mobile number (7–15 digits).</span>
+        </div>
+
+        <!-- Password Input with Show/Hide Toggle -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="input-field" 
+              placeholder="••••••••" 
+              required 
+              autocomplete="current-password"
+            >
+            <button type="button" class="toggle-password" id="togglePassword">Show</button>
+          </div>
+          <span class="error-msg" id="passwordError">Password cannot be empty.</span>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-actions">
+          <label class="remember-me">
+            <input type="checkbox" name="remember" id="remember">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-submit">Sign In</button>
+      </form>
+
+      <footer class="signup-prompt">
+        Don't have an account? <a href="signup.html">Sign up</a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const phoneInput = document.getElementById('phoneNumber');
+    const phoneError = document.getElementById('phoneError');
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('passwordError');
+    const togglePassword = document.getElementById('togglePassword');
+
+    // Show/Hide Password Toggle
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+
+    // Real-Time Mobile Number Validation
+    function validatePhone() {
+      const rawVal = phoneInput.value.trim();
+      const cleanVal = rawVal.replace(/[\s\-+()]/g, ''); // ignore standard formatting characters
+      const phonePattern = /^[0-9]{7,15}$/;
+
+      if (rawVal === '') {
+        phoneInput.classList.remove('valid', 'invalid');
+        phoneError.classList.remove('show');
+        return false;
+      }
+
+      const isValid = phonePattern.test(cleanVal);
+      if (isValid) {
+        phoneInput.classList.remove('invalid');
+        phoneInput.classList.add('valid');
+        phoneError.classList.remove('show');
+      } else {
+        phoneInput.classList.remove('valid');
+        phoneInput.classList.add('invalid');
+        phoneError.classList.add('show');
+      }
+      return isValid;
+    }
+
+    // Password Field Check
+    function validatePassword() {
+      const passVal = passwordInput.value;
+      if (passVal.length > 0) {
+        passwordInput.classList.remove('invalid');
+        passwordInput.classList.add('valid');
+        passwordError.classList.remove('show');
+        return true;
+      } else {
+        passwordInput.classList.remove('valid');
+        return false;
+      }
+    }
+
+    phoneInput.addEventListener('input', validatePhone);
+    passwordInput.addEventListener('input', validatePassword);
+
+    // Form Submission Handling
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const isPhoneValid = validatePhone();
+      let isPasswordValid = true;
+
+      if (!passwordInput.value) {
+        passwordInput.classList.add('invalid');
+        passwordError.classList.add('show');
+        isPasswordValid = false;
+      }
+
+      if (isPhoneValid && isPasswordValid) {
+        alert(`Login successful with mobile: ${phoneInput.value.trim()}`);
+        loginForm.reset();
+        phoneInput.classList.remove('valid');
+        passwordInput.classList.remove('valid');
+        togglePassword.textContent = 'Show';
+        passwordInput.setAttribute('type', 'password');
+      }
+    });
+  </script>
+</body>
+</html>

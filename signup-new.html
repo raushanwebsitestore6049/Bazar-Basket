@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Secure Sign Up</title>
+  <style>
+    /* CSS Variables: Deep Blue, Emerald Green, and Crisp White */
+    :root { 
+      /* Light Theme (Default) */
+      --bg-deep-blue: #f4f6f8;
+      --bg-gradient: #f4f6f8;
+      --accent-green: #0d7a42;
+      --accent-green-hover: #09582f;
+      --accent-green-glow: rgba(13, 122, 66, 0.15);
+      
+      --card-bg: #ffffff;
+      --card-border: #e5e8eb;
+      
+      --text-white: #1c252e;
+      --text-muted: #637381;
+      
+      --input-bg: #f8f9fa;
+      --input-border: #e5e8eb;
+
+      --danger-color: #d32f2f;
+      --success-color: #0d7a42;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+      /* Dark Theme */
+      --bg-deep-blue: #0b132b;
+      --bg-gradient: radial-gradient(circle at top right, #1c2541, #0b132b 85%);
+      --accent-green: #10b981;
+      --accent-green-hover: #059669;
+      --accent-green-glow: rgba(16, 185, 129, 0.25);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --input-bg: rgba(255, 255, 255, 0.08);
+      --input-border: rgba(255, 255, 255, 0.18);
+      --danger-color: #f43f5e;
+      --success-color: #10b981;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg-gradient);
+      color: var(--text-white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Glassmorphism Card */
+    .signup-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      /* backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); */
+      border: 1px solid var(--card-border);
+      border-radius: clamp(16px, 4vw, 24px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      padding: clamp(20px, 4vw, 36px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signup-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .signup-header h1 {
+      font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+
+    .signup-header p {
+      color: var(--text-muted);
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    }
+
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 460px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-white);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent-green);
+      background-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px var(--accent-green-glow);
+    }
+
+    .input-field.invalid {
+      border-color: var(--danger-color);
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+    }
+
+    .input-field.valid {
+      border-color: var(--success-color);
+    }
+
+    /* Mobile Number Input Group */
+    .phone-input-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .country-code-select {
+      width: 110px;
+      padding: 10px 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-white);
+      font-size: 0.88rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .country-code-select option {
+      background: var(--bg-deep-blue);
+      color: #ffffff;
+    }
+
+    .country-code-select:focus {
+      border-color: var(--accent-green);
+    }
+
+    /* Password Requirements Checklist */
+    .password-checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 10px;
+      background: var(--input-bg);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 4px;
+    }
+
+    .check-item {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .check-item::before {
+      content: "•";
+      font-size: 1.2rem;
+      line-height: 0;
+    }
+
+    .check-item.valid {
+      color: var(--success-color);
+    }
+
+    .check-item.valid::before {
+      content: "✓";
+      font-size: 0.8rem;
+    }
+
+    /* Inline Validation Feedback Messages */
+    .error-msg {
+      font-size: 0.75rem;
+      color: var(--danger-color);
+      display: none;
+      margin-top: 2px;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    .success-msg {
+      font-size: 0.75rem;
+      color: var(--success-color);
+      display: none;
+      margin-top: 2px;
+    }
+
+    .success-msg.show {
+      display: block;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--accent-green);
+      color: var(--text-white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 14px var(--accent-green-glow);
+      transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--accent-green-hover);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Footer */
+    .login-prompt {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .login-prompt a {
+      color: var(--accent-green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .login-prompt a:hover {
+      text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .signup-card {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <main class="signup-card">
+      <header class="signup-header">
+        <h1>Create Account</h1>
+        <p>Fill in your details with a secure password</p>
+      </header>
+
+      <form action="#" method="POST" id="signupForm" class="signup-form" novalidate>
+        
+        <!-- Name Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" class="input-field" placeholder="John" required autocomplete="given-name">
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" class="input-field" placeholder="Doe" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <!-- Phone Number with Country Code Dropdown -->
+        <div class="form-group">
+          <label for="phoneNumber">Mobile Number</label>
+          <div class="phone-input-group">
+            <select id="countryCode" name="countryCode" class="country-code-select">
+              <option value="+1">🇺🇸 +1 (US)</option>
+              <option value="+91" selected>🇮🇳 +91 (IN)</option>
+              <option value="+44">🇬🇧 +44 (UK)</option>
+              <option value="+61">🇦🇺 +61 (AU)</option>
+              <option value="+81">🇯🇵 +81 (JP)</option>
+              <option value="+49">🇩🇪 +49 (DE)</option>
+              <option value="+971">🇦🇪 +971 (AE)</option>
+              <option value="+65">🇸🇬 +65 (SG)</option>
+              <option value="+33">🇫🇷 +33 (FR)</option>
+            </select>
+            <input type="tel" id="phoneNumber" name="phoneNumber" class="input-field" placeholder="98765 43210" required autocomplete="tel-national">
+          </div>
+          <span class="error-msg" id="phoneError">Please enter a valid mobile number.</span>
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="input-field" placeholder="name@example.com" required autocomplete="email">
+          <span class="error-msg" id="emailError">Please enter a valid email format (e.g. user@domain.com).</span>
+        </div>
+
+        <!-- Hard Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="input-field" placeholder="Create a strong password" required autocomplete="new-password">
+          
+          <!-- Real-Time Password Checklist -->
+          <div class="password-checklist" id="pwdChecklist">
+            <div class="check-item" id="rule-length">8+ characters</div>
+            <div class="check-item" id="rule-upper">1 Uppercase (A-Z)</div>
+            <div class="check-item" id="rule-lower">1 Lowercase (a-z)</div>
+            <div class="check-item" id="rule-number">1 Number (0-9)</div>
+            <div class="check-item" id="rule-special" style="grid-column: span 2;">1 Special symbol (@$!%*?&#)</div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" class="input-field" placeholder="Repeat your password" required autocomplete="new-password">
+          <span class="error-msg" id="matchError">Passwords do not match.</span>
+          <span class="success-msg" id="matchSuccess">Passwords match!</span>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">Sign Up</button>
+      </form>
+
+      <footer class="login-prompt">
+        Already have an account? <a href="login-new.html">Sign in</a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    const phoneInput = document.getElementById('phoneNumber');
+    const phoneError = document.getElementById('phoneError');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const matchError = document.getElementById('matchError');
+    const matchSuccess = document.getElementById('matchSuccess');
+
+    // Hard Password Criteria Rules
+    const rules = {
+      length: { el: document.getElementById('rule-length'), test: (val) => val.length >= 8 },
+      upper: { el: document.getElementById('rule-upper'), test: (val) => /[A-Z]/.test(val) },
+      lower: { el: document.getElementById('rule-lower'), test: (val) => /[a-z]/.test(val) },
+      number: { el: document.getElementById('rule-number'), test: (val) => /[0-9]/.test(val) },
+      special: { el: document.getElementById('rule-special'), test: (val) => /[@$!%*?&#^()_+=\-[\]{}|;:,.<>~]/.test(val) }
+    };
+
+    // 1. Strict Email Format Validator
+    function validateEmail() {
+      const emailVal = emailInput.value.trim();
+      // RFC-compliant standard email regex
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      
+      if (emailVal === "") {
+        emailInput.classList.remove('valid', 'invalid');
+        emailError.classList.remove('show');
+        return false;
+      }
+      
+      const isValid = emailPattern.test(emailVal);
+      if (isValid) {
+        emailInput.classList.remove('invalid');
+        emailInput.classList.add('valid');
+        emailError.classList.remove('show');
+      } else {
+        emailInput.classList.remove('valid');
+        emailInput.classList.add('invalid');
+        emailError.classList.add('show');
+      }
+      return isValid;
+    }
+
+    // 2. Phone Number Validator
+    function validatePhone() {
+      const phoneVal = phoneInput.value.trim();
+      const phonePattern = /^[0-9]{7,15}$/;
+      
+      if (phoneVal === "") {
+        phoneInput.classList.remove('valid', 'invalid');
+        phoneError.classList.remove('show');
+        return false;
+      }
+
+      const isValid = phonePattern.test(phoneVal.replace(/\s+/g, ''));
+      if (isValid) {
+        phoneInput.classList.remove('invalid');
+        phoneInput.classList.add('valid');
+        phoneError.classList.remove('show');
+      } else {
+        phoneInput.classList.remove('valid');
+        phoneInput.classList.add('invalid');
+        phoneError.classList.add('show');
+      }
+      return isValid;
+    }
+
+    // 3. Password Strength Checker
+    function validatePassword() {
+      const val = passwordInput.value;
+      let allValid = true;
+
+      for (const key in rules) {
+        const passed = rules[key].test(val);
+        if (passed) {
+          rules[key].el.classList.add('valid');
+        } else {
+          rules[key].el.classList.remove('valid');
+          allValid = false;
+        }
+      }
+
+      if (val.length === 0) {
+        passwordInput.classList.remove('valid', 'invalid');
+      } else if (allValid) {
+        passwordInput.classList.remove('invalid');
+        passwordInput.classList.add('valid');
+      } else {
+        passwordInput.classList.remove('valid');
+        passwordInput.classList.add('invalid');
+      }
+
+      // Recheck confirmation whenever base password changes
+      if (confirmPasswordInput.value.length > 0) {
+        validatePasswordMatch();
+      }
+
+      return allValid;
+    }
+
+    // 4. Real-Time Password Match (Starts on first character input)
+    function validatePasswordMatch() {
+      const pwd = passwordInput.value;
+      const confirmPwd = confirmPasswordInput.value;
+
+      if (confirmPwd.length === 0) {
+        confirmPasswordInput.classList.remove('valid', 'invalid');
+        matchError.classList.remove('show');
+        matchSuccess.classList.remove('show');
+        return false;
+      }
+
+      if (pwd === confirmPwd && pwd !== '') {
+        confirmPasswordInput.classList.remove('invalid');
+        confirmPasswordInput.classList.add('valid');
+        matchError.classList.remove('show');
+        matchSuccess.classList.add('show');
+        return true;
+      } else {
+        confirmPasswordInput.classList.remove('valid');
+        confirmPasswordInput.classList.add('invalid');
+        matchError.classList.add('show');
+        matchSuccess.classList.remove('show');
+        return false;
+      }
+    }
+
+    // Event Listeners for live verification
+    emailInput.addEventListener('input', validateEmail);
+    phoneInput.addEventListener('input', validatePhone);
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+
+    // Form Submission Handler
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const isEmailValid = validateEmail();
+      const isPhoneValid = validatePhone();
+      const isPasswordValid = validatePassword();
+      const isMatchValid = validatePasswordMatch();
+
+      if (isEmailValid && isPhoneValid && isPasswordValid && isMatchValid) {
+        alert('Account created successfully!');
+        form.reset();
+        // Clear status styling
+        document.querySelectorAll('.input-field').forEach(input => input.classList.remove('valid'));
+        document.querySelectorAll('.check-item').forEach(item => item.classList.remove('valid'));
+        matchSuccess.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
