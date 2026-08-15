@@ -1,5 +1,11 @@
-# Firebase configuration file
+# Environment variables
+.env
+
+# Firebase config file (if you choose to use it instead of .env with a server)
 firebase-config.js
 
-# Environment variables file (if you use it in the future)
-.env
+# Dependencies
+node_modules/
+
+# IDE and OS files
+.vscode/

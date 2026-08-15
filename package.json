@@ -1,5 +1,14 @@
 {
+  "name": "bazar-basket",
+  "version": "1.0.0",
+  "description": "BazarBasket - Fresh Grocery, Everyday",
+  "main": "script.js",
+  "scripts": {
+    "build": "node ./create-firebase-config.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "firebase": "^12.17.1"
+    "dotenv": "^17.4.2"
   }
 }
